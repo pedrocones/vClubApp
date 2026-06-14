@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:java="http://www.yworks.com/xml/yfiles-common/1.0/java" xmlns:sys="http://www.yworks.com/xml/yfiles-common/markup/primitives/2.0" xmlns:x="http://www.yworks.com/xml/yfiles-common/markup/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:y="http://www.yworks.com/xml/graphml" xmlns:yed="http://www.yworks.com/xml/yed/3" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd">
+  <!--Created by yEd 3.23.1-->
+  <key for="port" id="d0" yfiles.type="portgraphics"/>
+  <key for="port" id="d1" yfiles.type="portgeometry"/>
+  <key for="port" id="d2" yfiles.type="portuserdata"/>
+  <key attr.name="url" attr.type="string" for="node" id="d3"/>
+  <key attr.name="description" attr.type="string" for="node" id="d4"/>
+  <key for="node" id="d5" yfiles.type="nodegraphics"/>
+  <key for="graphml" id="d6" yfiles.type="resources"/>
+  <key attr.name="url" attr.type="string" for="edge" id="d7"/>
+  <key attr.name="description" attr.type="string" for="edge" id="d8"/>
+  <key for="edge" id="d9" yfiles.type="edgegraphics"/>
+  <graph edgedefault="directed" id="G">
+    <node id="n0">
+      <data key="d5">
+        <y:UMLClassNode>
+          <y:Geometry height="204.0" width="162.0" x="1285.8333333333333" y="-24.5512225705329"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="50.013671875" x="55.9931640625" xml:space="preserve" y="3.0">Member</y:NodeLabel>
+          <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel xml:space="preserve">UserID:Number
+UserName:String
+FirstName:String
+LastName:String
+Email:String
+Phones[]:phone(type,countryCode,number)
+Roles[]:role (kind(string),since(date), active(boolean)?))
+Coach:UserID
+Donations:donation[(currency,number,cause,embassador,date,conversion rate,vCoins] ( potential refactor donation ID [] )</y:AttributeLabel>
+            <y:MethodLabel xml:space="preserve"/>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n1">
+      <data key="d5">
+        <y:UMLClassNode>
+          <y:Geometry height="298.0" width="205.49999999999977" x="1107.833333333333" y="271.5"/>
+          <y:Fill color="#BDB992" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="76.029296875" x="64.73535156249989" xml:space="preserve" y="3.0">Embassador</y:NodeLabel>
+          <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel xml:space="preserve">causes[]:causes
+Bankaccount:backAccount</y:AttributeLabel>
+            <y:MethodLabel xml:space="preserve">getMyCause():causes
+getGoalStatus();
+</y:MethodLabel>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n2">
+      <data key="d5">
+        <y:UMLClassNode>
+          <y:Geometry height="298.0" width="202.0" x="1352.333333333333" y="271.5"/>
+          <y:Fill color="#BDB992" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="42.677734375" x="79.6611328125" xml:space="preserve" y="3.0">Officer</y:NodeLabel>
+          <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel xml:space="preserve">NPOs[];NPO
+currentDirectors[];string
+balances[];balance
+
+</y:AttributeLabel>
+            <y:MethodLabel xml:space="preserve">getNPOs():NPOs[]
+createCause():cause
+removeCause():cause
+updateCause():cause
+updateDirectors():directors
+updateBalance():balance
+
+</y:MethodLabel>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n3">
+      <data key="d5">
+        <y:UMLClassNode>
+          <y:Geometry height="298.0" width="267.0" x="810.8333333333333" y="271.5"/>
+          <y:Fill color="#BDB992" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="43.99609375" x="111.501953125" xml:space="preserve" y="3.0">Mentor</y:NodeLabel>
+          <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel xml:space="preserve">Embassadors[]:embassadors</y:AttributeLabel>
+            <y:MethodLabel xml:space="preserve">getUpdate():goals vs plan of embassadors
+getEmbassadorList():embassadors[]
+
+</y:MethodLabel>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n4">
+      <data key="d5">
+        <y:UMLClassNode>
+          <y:Geometry height="303.0" width="300.0" x="1593.333333333333" y="271.5"/>
+          <y:Fill color="#BDB992" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="53.34765625" x="123.326171875" xml:space="preserve" y="3.0">Manager</y:NodeLabel>
+          <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel xml:space="preserve">corporations[]:corporations
+approvedCauses[]:causes
+matchingDonation:number
+timeAllowance:number(allocation/hour)
+MaximumMatchingDonation:number(total dollars)
+MaximumTimeAllowance:number
+
+</y:AttributeLabel>
+            <y:MethodLabel xml:space="preserve"/>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <edge id="e0" source="n4" target="n0">
+      <data key="d9">
+        <y:PolyLineEdge>
+          <y:Path reversedPathRendering="true" sx="-3.33333333333303" sy="-151.5390625" tx="0.0" ty="102.00000000000006">
+            <y:Point x="1740.0" y="219.0"/>
+            <y:Point x="1366.8333333333333" y="219.0"/>
+          </y:Path>
+          <y:LineStyle color="#333399" type="dashed" width="2.0"/>
+          <y:Arrows source="none" target="white_delta"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e1" source="n2" target="n0">
+      <data key="d9">
+        <y:PolyLineEdge>
+          <y:Path reversedPathRendering="true" sx="0.0" sy="-148.99999999999991" tx="0.0" ty="102.00000000000006">
+            <y:Point x="1453.333333333333" y="219.0"/>
+            <y:Point x="1366.8333333333333" y="219.0"/>
+          </y:Path>
+          <y:LineStyle color="#333399" type="dashed" width="2.0"/>
+          <y:Arrows source="none" target="white_delta"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e2" source="n1" target="n0">
+      <data key="d9">
+        <y:PolyLineEdge>
+          <y:Path reversedPathRendering="true" sx="0.0" sy="-148.99999999999986" tx="0.0" ty="102.00000000000006">
+            <y:Point x="1210.583333333333" y="219.0"/>
+            <y:Point x="1366.8333333333333" y="219.0"/>
+          </y:Path>
+          <y:LineStyle color="#333399" type="dashed" width="2.0"/>
+          <y:Arrows source="none" target="white_delta"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e3" source="n3" target="n0">
+      <data key="d9">
+        <y:PolyLineEdge>
+          <y:Path reversedPathRendering="true" sx="0.0" sy="-149.02631524268608" tx="0.0" ty="102.00000000000006">
+            <y:Point x="944.3333333333333" y="219.0"/>
+            <y:Point x="1366.8333333333333" y="219.0"/>
+          </y:Path>
+          <y:LineStyle color="#333399" type="dashed" width="2.0"/>
+          <y:Arrows source="none" target="white_delta"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+  </graph>
+  <data key="d6">
+    <y:Resources/>
+  </data>
+</graphml>
