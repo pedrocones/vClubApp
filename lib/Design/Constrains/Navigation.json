@@ -1,0 +1,24 @@
+{
+    "version":1.0,
+    "pages":
+    {
+        "Home": 
+        {
+            "topMenu": "HMI/Menus/TopMenue.dart",
+            "body":"HMI/Pages/Home.dart" 
+            {
+                "donate": "HMI/Form/DonateForm.dart" {
+                    "img":"Assets/img/donate.png"
+                },
+                "volunteer": "HMI/From/Volunteer.dart" {
+                    "ing":"Assets/img/stongerTogether.png"
+                },
+                "membership":"HMI/From/Membership.dart"{
+                    "img":"Assets/img/vicinumShiel_TranspBG.png"
+                },
+            },
+            "bottomMenu":"HMI/Menus/BottomMenue.dart",
+        }  
+    }
+}
+    
