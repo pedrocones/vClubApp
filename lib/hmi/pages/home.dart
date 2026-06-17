@@ -10,6 +10,8 @@ import 'system_settings.dart';
 import 'sign_up.dart';
 import 'profile.dart';
 import 'sign_off.dart';
+import 'about_us.dart';
+import 'contact_us.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,17 +21,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Navigation Index Tracking:
   // 0=Home, 1=About, 2=Donate, 3=Volunteer, 4=Membership, 5=System Settings, 6=Profile/Auth
   int _currentStep = 0;
-
-  // Foundational Session Variable: Drives the conditional view-switching behavior
   bool _mockIsLoggedIn = false;
 
-  /// Centralized navigation state processor
   void _handleNavigation(int selectedValue) {
     if (selectedValue == 99) {
-      // Sign-off remains an external workflow that gracefully routes outside the shell
       Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => const SignOffPage()),
@@ -39,21 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
         _currentStep = selectedValue;
       });
     }
-  }
-
-  /// Interactive session toggler (Placed here to test active vs guest layout switches instantly)
-  void _toggleDevelopmentAuth() {
-    setState(() {
-      _mockIsLoggedIn = !_mockIsLoggedIn;
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          _mockIsLoggedIn ? 'Session Auth: ACTIVE' : 'Session Auth: GUEST',
-        ),
-        duration: const Duration(milliseconds: 700),
-      ),
-    );
   }
 
   @override
@@ -66,8 +48,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
         return Scaffold(
           backgroundColor: Colors.white,
-
-          // 1. TOP APP BAR
           appBar: AppBar(
             backgroundColor: Colors.indigo,
             elevation: 0,
@@ -92,7 +72,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             actions: [
-              // Profile Action: Triggers uniform inside-the-body workspace switches
               IconButton(
                 icon: Icon(
                   _mockIsLoggedIn
@@ -102,7 +81,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 onPressed: () => _handleNavigation(6),
               ),
-
               PopupMenuButton<int>(
                 icon: const Icon(Icons.more_vert, color: Colors.white),
                 onSelected: _handleNavigation,
@@ -114,17 +92,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   const PopupMenuItem(value: 4, child: Text('Membership')),
                   const PopupMenuDivider(),
                   const PopupMenuItem(value: 5, child: Text('System Settings')),
+                  const PopupMenuItem(value: 7, child: Text('Contact Us')),
                   const PopupMenuItem(value: 99, child: Text('Sign Out')),
                 ],
               ),
               const SizedBox(width: 10),
             ],
           ),
-
-          // 2. UNIFORM MAIN BODY WRAPPER
           body: _buildActivePageLayout(),
-
-          // 3. ADAPTIVE BOTTOM NAVIGATION BAR
           bottomNavigationBar: isMobileLandscape
               ? null
               : Container(
@@ -166,11 +141,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-
-          // Floating toggle switch used only to evaluate Auth vs Guest layouts effortlessly
           floatingActionButton: FloatingActionButton.small(
             backgroundColor: Colors.amber,
-            onPressed: _toggleDevelopmentAuth,
+            onPressed: () => setState(() => _mockIsLoggedIn = !_mockIsLoggedIn),
             child: const Icon(Icons.cached, color: Colors.indigo),
           ),
         );
@@ -178,11 +151,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  /// Evaluates state to determine exactly which component module updates the inline workspace
   Widget _buildActivePageLayout() {
     switch (_currentStep) {
       case 1:
-        return const Center(child: Text('About Us Content View'));
+        return const AboutUsPage();
       case 2:
         return _mockIsLoggedIn ? const DonateLoggedPage() : const DonatePage();
       case 3:
@@ -196,8 +168,9 @@ class _HomeScreenState extends State<HomeScreen> {
       case 5:
         return const SystemSettingsPage();
       case 6:
-        // Dynamic profile management routing block embedded straight into the application frame body
         return _mockIsLoggedIn ? const ProfilePage() : const SignUpPage();
+      case 7:
+        return const ContactUsPage();
       case 0:
       default:
         return LandingHubView(onNavigate: _handleNavigation);

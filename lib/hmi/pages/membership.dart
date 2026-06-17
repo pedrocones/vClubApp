@@ -58,7 +58,7 @@ class MembershipPage extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Align(
-              alignment: Alignment.right,
+              alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {},
                 child: const Text('Learn More'),

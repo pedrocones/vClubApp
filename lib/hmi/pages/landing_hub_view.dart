@@ -2,49 +2,25 @@ import 'package:flutter/material.dart';
 
 class LandingHubView extends StatelessWidget {
   final Function(int) onNavigate;
-
   const LandingHubView({super.key, required this.onNavigate});
 
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> items = [
-      {
-        'title': 'Donate',
-        'image': 'Assets/img/donate.png',
-        'icon': 'favorite',
-        'index': 2,
-      },
-      {
-        'title': 'Volunteer',
-        'image': 'Assets/img/stongerTogether.png',
-        'icon': 'groups',
-        'index': 3,
-      },
-      {
-        'title': 'Membership',
-        'image': 'Assets/img/vicinumShield_TranspBG.png',
-        'icon': 'shield',
-        'index': 4,
-      },
+      {'title': 'Donate', 'image': 'Assets/img/donate.png', 'icon': 'favorite', 'index': 2},
+      {'title': 'Volunteer', 'image': 'Assets/img/stongerTogether.png', 'icon': 'groups', 'index': 3},
+      {'title': 'Membership', 'image': 'Assets/img/vicinumShield_TranspBG.png', 'icon': 'shield', 'index': 4},
     ];
 
     return LayoutBuilder(
       builder: (context, constraints) {
         double width = constraints.maxWidth;
         double height = constraints.maxHeight;
-
-        // Determine if space is constrained horizontally or vertically
-        bool isMobilePortrait = width < 650 && height >= width;
-        bool useHorizontalLayout =
-            width >= 650 || (height < 500 && width > height);
+        bool useHorizontalLayout = width >= 650 || (height < 500 && width > height);
 
         if (!useHorizontalLayout) {
-          // Portrait Mobile: Vertical block stacking
           return Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 20.0,
-              horizontal: 24.0,
-            ),
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -53,25 +29,19 @@ class LandingHubView extends StatelessWidget {
           );
         }
 
-        // Landscape Mobile, Tablet, and Desktop: Side-by-side row arrangement
-        // Scale down asset size dynamically if the window height drops below 400px
         double targetAssetHeight = height < 400 ? 90 : 150;
-
         return Center(
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: items.map((item) {
-                  return Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: _buildCardItem(item, targetAssetHeight),
-                    ),
-                  );
-                }).toList(),
+                children: items.map((item) => Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: _buildCardItem(item, targetAssetHeight),
+                  ),
+                )).toList(),
               ),
             ),
           ),
@@ -88,7 +58,6 @@ class LandingHubView extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               height: assetSize,
@@ -98,28 +67,18 @@ class LandingHubView extends StatelessWidget {
                 item['image']!,
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) => Icon(
-                  item['icon'] == 'favorite'
-                      ? Icons.favorite_border
-                      : item['icon'] == 'groups'
-                      ? Icons.lightbulb_outline
-                      : Icons.shield_outlined,
+                  item['icon'] == 'favorite' ? Icons.favorite_border : item['icon'] == 'groups' ? Icons.lightbulb_outline : Icons.shield_outlined,
                   size: assetSize * 0.6,
                   color: Colors.indigo,
                 ),
               ),
             ),
             const SizedBox(height: 6),
-            Text(
-              item['title']!,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                decoration: TextDecoration.underline,
-              ),
-            ),
+            Text(item['title']!, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, decoration: TextDecoration.underline)),
           ],
         ),
       ),
     );
   }
 }
+
