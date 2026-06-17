@@ -1,0 +1,83 @@
++---lib
+|   |   firebase_options.dart
+|   |   main.dart
+|   |   
+|   +---API
+|   |       ADonate.dart
+|   |       Amembership.dart
+|   |       ASignup.dart
+|   |       Avonlunteering.dart
+|   |       
+|   +---Assets
+|   |   +---flags
+|   |   |       en-CA-250x125.png
+|   |   |       en-UK-256x128.png
+|   |   |       es-ES-250x167.png
+|   |   |       fr-FR-250x167.png
+|   |   |       
+|   |   +---fonts
+|   |   +---icons
+|   |   |       Facebook Round.png
+|   |   |       Flickr round.png
+|   |   |       Google plus round new.png
+|   |   |       Instagram round social media icon free.png
+|   |   |       Linkedin round.png
+|   |   |       Pinterest round.png
+|   |   |       Skype round social media icon free.png
+|   |   |       Snapchat  round social media icon Free plain.png
+|   |   |       Snapchat  round social media icon Free.png
+|   |   |       Tumblr round.png
+|   |   |       Twitter round.png
+|   |   |       Whatsapp free social media icon round.png
+|   |   |       Youtube round.png
+|   |   |       
+|   |   \---img
+|   |           donate.png
+|   |           neigborhood 100x100.png
+|   |           stongerTogether.png
+|   |           vicinumShield_whiteBG.png
+|   |           vicinumShiel_TranspBG.png
+|   |           
+|   +---Design
+|   |   +---Constrains
+|   |   |       Folders
+|   |   |       Navigation.json
+|   |   |       
+|   |   +---Flowcharts
+|   |   |       Architecture.graphml
+|   |   |       UMLCauses.graphml
+|   |   |       UMLMembership.graphml
+|   |   |       usecaseMain.graphml
+|   |   |       
+|   |   \---Prompts
+|   +---Functions
+|   |       DashBoardData.dart
+|   |       DonationRecord.dart
+|   |       PaymentProcessor.dart
+|   |       ProfileUPdate.dart
+|   |       SIgnUPFunction.dart
+|   |       VolunteerPosition.dart
+|   |       VolunteerSearch.dart
+|   |       
+|   \---HMI
+|       +---Forms
+|       |       ProfileForm.dart
+|       |       SignUpForm.dart
+|       |       TransactionForm.dart
+|       |       
+|       +---Menus
+|       |       BottomMenu.dart
+|       |       PopUpMenu.dart
+|       |       SideBarMenu.dart
+|       |       TopMenu.dart
+|       |       
+|       \---Pages
+|           |   Dashboard.dart
+|           |   Donate.dart
+|           |   Home.dart
+|           |   Membership.dart
+|           |   Volunteer.dart
+|           |   
+|                   
++---test
+|       widget_test.dart
