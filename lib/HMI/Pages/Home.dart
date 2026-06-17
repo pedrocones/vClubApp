@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'landing_hub_view.dart';
 import 'donate.dart';
+import 'donate_logged.dart';
+import 'volunteer.dart';
+import 'volunteer_logged.dart';
+import 'membership.dart';
+import 'membership_logged.dart';
 import 'system_settings.dart';
+import 'sign_up.dart';
+import 'profile.dart';
 import 'sign_off.dart';
-import 'mock_auth_forms.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,55 +20,38 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   // Navigation Index Tracking:
-  // 0=Home, 1=About, 2=Donate, 3=Volunteer, 4=Membership, 5=System Settings
+  // 0=Home, 1=About, 2=Donate, 3=Volunteer, 4=Membership, 5=System Settings, 6=Profile/Auth
   int _currentStep = 0;
 
-  // Development simulation toggle tracking session state
+  // Foundational Session Variable: Drives the conditional view-switching behavior
   bool _mockIsLoggedIn = false;
 
-  /// Smart routing handler filtering out only the Sign-Out exit utility
+  /// Centralized navigation state processor
   void _handleNavigation(int selectedValue) {
     if (selectedValue == 99) {
-      // Sign out remains an isolated overlay step leading to a farewell scene
+      // Sign-off remains an external workflow that gracefully routes outside the shell
       Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => const SignOffPage()),
       );
     } else {
-      // Changes the active inner body layout instantly
       setState(() {
         _currentStep = selectedValue;
       });
     }
   }
 
-  /// Triggers the dynamic development authentication state switch on click
-  void _handleProfileRoute() {
-    if (_mockIsLoggedIn) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const MockProfileFormPage()),
-      );
-    } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const MockSignUpFormPage()),
-      );
-    }
-
-    // Toggle automatically at the bottom of the execution track
+  /// Interactive session toggler (Placed here to test active vs guest layout switches instantly)
+  void _toggleDevelopmentAuth() {
     setState(() {
       _mockIsLoggedIn = !_mockIsLoggedIn;
     });
-
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          _mockIsLoggedIn
-              ? 'Switched to Authenticated state'
-              : 'Switched to Guest state',
+          _mockIsLoggedIn ? 'Session Auth: ACTIVE' : 'Session Auth: GUEST',
         ),
-        duration: const Duration(milliseconds: 600),
+        duration: const Duration(milliseconds: 700),
       ),
     );
   }
@@ -73,8 +62,6 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, constraints) {
         double width = constraints.maxWidth;
         double height = constraints.maxHeight;
-
-        // Hide bottom navigation bar in tight landscape views to conserve workspace height
         bool isMobileLandscape = height < 500 && width > height;
 
         return Scaffold(
@@ -105,6 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             actions: [
+              // Profile Action: Triggers uniform inside-the-body workspace switches
               IconButton(
                 icon: Icon(
                   _mockIsLoggedIn
@@ -112,8 +100,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       : Icons.account_circle_outlined,
                   color: _mockIsLoggedIn ? Colors.amber : Colors.white,
                 ),
-                onPressed: _handleProfileRoute,
+                onPressed: () => _handleNavigation(6),
               ),
+
               PopupMenuButton<int>(
                 icon: const Icon(Icons.more_vert, color: Colors.white),
                 onSelected: _handleNavigation,
@@ -132,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
 
-          // 2. PRIMARY CONTENT FRAME
+          // 2. UNIFORM MAIN BODY WRAPPER
           body: _buildActivePageLayout(),
 
           // 3. ADAPTIVE BOTTOM NAVIGATION BAR
@@ -150,7 +139,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       unselectedItemColor: Colors.white70,
                       showSelectedLabels: false,
                       showUnselectedLabels: false,
-                      // Clamps the highlighted index to standard tabs; if settings (5) is active, no tab glows
                       currentIndex: _currentStep > 4 ? 0 : _currentStep,
                       onTap: _handleNavigation,
                       items: const [
@@ -178,24 +166,38 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
+
+          // Floating toggle switch used only to evaluate Auth vs Guest layouts effortlessly
+          floatingActionButton: FloatingActionButton.small(
+            backgroundColor: Colors.amber,
+            onPressed: _toggleDevelopmentAuth,
+            child: const Icon(Icons.cached, color: Colors.indigo),
+          ),
         );
       },
     );
   }
 
-  /// Maps navigation state parameters directly to view widgets to overwrite body contents
+  /// Evaluates state to determine exactly which component module updates the inline workspace
   Widget _buildActivePageLayout() {
     switch (_currentStep) {
       case 1:
         return const Center(child: Text('About Us Content View'));
       case 2:
-        return const DonatePage();
+        return _mockIsLoggedIn ? const DonateLoggedPage() : const DonatePage();
       case 3:
-        return const Center(child: Text('Volunteer Directory Grid View'));
+        return _mockIsLoggedIn
+            ? const VolunteerLoggedPage()
+            : const VolunteerPage();
       case 4:
-        return const Center(child: Text('Membership Enrollment Dashboard'));
+        return _mockIsLoggedIn
+            ? const MembershipLoggedPage()
+            : const MembershipPage();
       case 5:
-        return const SystemSettingsPage(); // Uniform inner page container replacement
+        return const SystemSettingsPage();
+      case 6:
+        // Dynamic profile management routing block embedded straight into the application frame body
+        return _mockIsLoggedIn ? const ProfilePage() : const SignUpPage();
       case 0:
       default:
         return LandingHubView(onNavigate: _handleNavigation);
