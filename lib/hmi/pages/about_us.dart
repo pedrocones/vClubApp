@@ -70,7 +70,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
       case 2:
         return const PrivacyPolicyPage();
       case 3:
-        return const ContactUsPage();
+        return ContactUsPage();
       case 0:
       default:
         return const AboutUsStrategyView();

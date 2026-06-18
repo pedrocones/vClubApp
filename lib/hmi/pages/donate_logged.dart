@@ -5,7 +5,7 @@ import '../../api/mock_services_registry.dart';
 class DonateLoggedPage extends StatefulWidget {
   final AbstractDonateService donateService;
 
-  const DonateLoggedPage({super.key, AbstractDonateService? service})
+  DonateLoggedPage({super.key, AbstractDonateService? service})
     : donateService = service ?? testDonateAPI;
 
   @override

@@ -156,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case 1:
         return const AboutUsPage();
       case 2:
-        return _mockIsLoggedIn ? const DonateLoggedPage() : const DonatePage();
+        return _mockIsLoggedIn ? DonateLoggedPage() : const DonatePage();
       case 3:
         return _mockIsLoggedIn
             ? const VolunteerLoggedPage()
@@ -170,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case 6:
         return _mockIsLoggedIn ? const ProfilePage() : const SignUpPage();
       case 7:
-        return const ContactUsPage();
+        return ContactUsPage();
       case 0:
       default:
         return LandingHubView(onNavigate: _handleNavigation);

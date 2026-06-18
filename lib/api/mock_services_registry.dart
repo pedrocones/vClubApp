@@ -1,6 +1,6 @@
 import 'abstract_auth_service.dart';
 import 'abstract_donate_service.dart';
-import 'abstract_contact_service.dart';
+//import 'abstract_contact_service.dart';
 import 'mock_contact_service.dart';
 
 // Complete mock definitions used globally for manual injections
