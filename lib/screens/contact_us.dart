@@ -22,6 +22,8 @@ class _ContactUsPageState extends State<ContactUsPage> {
   String _selectedCategory = 'General Inquiry';
   String? _localAttachmentPath;
   String? _displayedFileName;
+  //will do lenght validation to avoid exploits
+  // ignore: unused_field
   int _currentTextLength = 0;
   bool _isSending = false;
 
@@ -65,6 +67,8 @@ class _ContactUsPageState extends State<ContactUsPage> {
         });
       }
     } catch (e) {
+      // Check if the widget is still on the screen otherwise silently crash
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('File access denied or unverified: $e')),
       );
@@ -161,7 +165,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
 
               // 2. Dynamic Inquiry Tracker Dropdown
               DropdownButtonFormField<String>(
-                value: _selectedCategory,
+                initialValue: _selectedCategory,
                 decoration: const InputDecoration(
                   labelText: 'Inquiry Category',
                   border: OutlineInputBorder(),
@@ -211,10 +215,12 @@ class _ContactUsPageState extends State<ContactUsPage> {
                   hintText: 'Describe your request details here...',
                 ),
                 validator: (val) {
-                  if (val == null || val.isEmpty)
+                  if (val == null || val.isEmpty) {
                     return 'Message field cannot be left blank';
-                  if (val.length > 4000)
+                  }
+                  if (val.length > 4000) {
                     return 'Cannot exceed strict 4,000 parameter limits';
+                  }
                   return null;
                 },
               ),

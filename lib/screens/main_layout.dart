@@ -1,45 +1,49 @@
 import 'package:flutter/material.dart';
-import 'landing_hub_view.dart';
-import 'donate.dart';
-import 'donate_logged.dart';
-import 'volunteer.dart';
-import 'volunteer_logged.dart';
-import 'membership.dart';
-import 'membership_logged.dart';
-import 'system_settings.dart';
-import 'sign_up.dart';
-import 'profile.dart';
-import 'sign_off.dart';
-import 'about_us.dart';
-import 'contact_us.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class MainLayout extends StatelessWidget {
+  final Widget child;
+  const MainLayout({super.key, required this.child});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
+  // Identifies which main step index is active based on the current URL
+  int _calculateCurrentIndex(BuildContext context) {
+    final String location = GoRouterState.of(context).uri.toString();
+    if (location.startsWith('/about')) return 1;
+    if (location.startsWith('/donate')) return 2;
+    if (location.startsWith('/volunteer')) return 3;
+    if (location.startsWith('/membership')) return 4;
+    return 0; // Default fallback to home dashboard view
+  }
 
-class _HomeScreenState extends State<HomeScreen> {
-  // 0=Home, 1=About, 2=Donate, 3=Volunteer, 4=Membership, 5=System Settings, 6=Profile/Auth
-  int _currentStep = 0;
-  bool _mockIsLoggedIn = false;
-
-  void _handleNavigation(int selectedValue) {
-    if (selectedValue == 99) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const SignOffPage()),
-      );
-    } else {
-      setState(() {
-        _currentStep = selectedValue;
-      });
+  void _onNavigationChanged(BuildContext context, int value) {
+    if (value == 99) {
+      context.read<AppAuthProvider>().logout();
+      context.push('/sign-off');
+      return;
+    }
+    final paths = {
+      0: '/',
+      1: '/about',
+      2: '/donate',
+      3: '/volunteer',
+      4: '/membership',
+      5: '/settings',
+      6: '/profile',
+      7: '/contact',
+      99: '/sing-off',
+    };
+    if (paths.containsKey(value)) {
+      context.go(paths[value]!);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = context.watch<AppAuthProvider>();
+    final int currentIndex = _calculateCurrentIndex(context);
+
     return LayoutBuilder(
       builder: (context, constraints) {
         double width = constraints.maxWidth;
@@ -74,16 +78,16 @@ class _HomeScreenState extends State<HomeScreen> {
             actions: [
               IconButton(
                 icon: Icon(
-                  _mockIsLoggedIn
+                  authProvider.isLoggedIn
                       ? Icons.account_circle
                       : Icons.account_circle_outlined,
-                  color: _mockIsLoggedIn ? Colors.amber : Colors.white,
+                  color: authProvider.isLoggedIn ? Colors.amber : Colors.white,
                 ),
-                onPressed: () => _handleNavigation(6),
+                onPressed: () => _onNavigationChanged(context, 6),
               ),
               PopupMenuButton<int>(
                 icon: const Icon(Icons.more_vert, color: Colors.white),
-                onSelected: _handleNavigation,
+                onSelected: (val) => _onNavigationChanged(context, val),
                 itemBuilder: (BuildContext context) => [
                   const PopupMenuItem(value: 0, child: Text('Home')),
                   const PopupMenuItem(value: 1, child: Text('About Us')),
@@ -99,7 +103,8 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(width: 10),
             ],
           ),
-          body: _buildActivePageLayout(),
+          // GoRouter safely projects the target view component directly into this container
+          body: child,
           bottomNavigationBar: isMobileLandscape
               ? null
               : Container(
@@ -108,14 +113,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: BottomNavigationBar(
                       type: BottomNavigationBarType.fixed,
                       backgroundColor: Colors.indigo,
-                      selectedItemColor: _currentStep > 4
-                          ? Colors.white70
-                          : Colors.amber,
+                      selectedItemColor: Colors.amber,
                       unselectedItemColor: Colors.white70,
                       showSelectedLabels: false,
                       showUnselectedLabels: false,
-                      currentIndex: _currentStep > 4 ? 0 : _currentStep,
-                      onTap: _handleNavigation,
+                      currentIndex: currentIndex,
+                      onTap: (val) => _onNavigationChanged(context, val),
                       items: const [
                         BottomNavigationBarItem(
                           icon: Icon(Icons.home),
@@ -143,37 +146,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
           floatingActionButton: FloatingActionButton.small(
             backgroundColor: Colors.amber,
-            onPressed: () => setState(() => _mockIsLoggedIn = !_mockIsLoggedIn),
+            onPressed: () => authProvider.toggleLogin(),
             child: const Icon(Icons.cached, color: Colors.indigo),
           ),
         );
       },
     );
-  }
-
-  Widget _buildActivePageLayout() {
-    switch (_currentStep) {
-      case 1:
-        return const AboutUsPage();
-      case 2:
-        return _mockIsLoggedIn ? DonateLoggedPage() : const DonatePage();
-      case 3:
-        return _mockIsLoggedIn
-            ? const VolunteerLoggedPage()
-            : const VolunteerPage();
-      case 4:
-        return _mockIsLoggedIn
-            ? const MembershipLoggedPage()
-            : const MembershipPage();
-      case 5:
-        return const SystemSettingsPage();
-      case 6:
-        return _mockIsLoggedIn ? const ProfilePage() : const SignUpPage();
-      case 7:
-        return ContactUsPage();
-      case 0:
-      default:
-        return LandingHubView(onNavigate: _handleNavigation);
-    }
   }
 }
