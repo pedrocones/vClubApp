@@ -1,6 +1,7 @@
 {
   "environment": {
     "debug": {
+      "console command":"firebase emulators:start --project demo-vicinum-project",
       "firestore_emulator_host": "localhost:8080",
       "project_id": "demo-vicinum-project"
     },
@@ -19,6 +20,9 @@
         "country_name_en": { "required": true },
         "country_name_es": { "required": false },
         "country_name_fr": { "required": false },
+        "country_name_hi": { "required": false },
+        "country_name_ar": { "required": false },
+        "country_name_zn": { "required": false },
         "isCountryOnboarded": { "required": false }
       }
     },
@@ -32,6 +36,9 @@
         "subdivision_name_en": { "required": true },
         "subdivision_name_es": { "required": false },
         "subdivision_name_fr": { "required": false },
+        "subdivision_name_hi": { "required": false },
+        "subdivision_name_ar": { "required": false },
+        "subdivision_name_zn": { "required": false },
         "subdivision_category": { "required": true },
         "isSubdivisionOnboarded": { "required": false }
       }
@@ -46,6 +53,9 @@
         "town_name_en": { "required": true },
         "town_name_es": { "required": false },
         "town_name_fr": { "required": false },
+        "town_name_hi": { "required": true },
+        "town_name_ar": { "required": false },
+        "town_name_zn": { "required": false },
         "town_population": { "required": false },
         "town_last_census": { "required": false },
         "town_latitude": { "required": false },

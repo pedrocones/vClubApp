@@ -66,6 +66,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   Future<void> _dismissDriftFlag(DocumentReference docRef) async {
     try {
       await docRef.update({'isRecordChanged': false});
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('✅ Record reviewed and dismissed successfully!'),
