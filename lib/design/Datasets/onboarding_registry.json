@@ -1,0 +1,24 @@
+{
+  "onboarding_registry": {
+    "US": {
+      "isOnboarded": true,
+      "onboardedSubdivisions": { "US-CA": true, "US-FL": true }
+    },
+    "CA": { "isOnboarded": true, "onboardedSubdivisions": {} },
+    "VE": { "isOnboarded": true, "onboardedSubdivisions": {} },
+    "MX": { "isOnboarded": true, "onboardedSubdivisions": {} }
+  },
+  "localization": {
+    "supportedLanguages": ["en", "es"],
+    "countries": {
+      "US": { "en": "United States", "es": "Estados Unidos" },
+      "CA": { "en": "Canada", "es": "Canadá" },
+      "VE": { "en": "Venezuela", "es": "Venezuela" },
+      "MX": { "en": "Mexico", "es": "México" }
+    },
+    "subdivisions": {
+      "US-CA": { "en": "California", "es": "California" },
+      "US-FL": { "en": "Florida", "es": "Florida" }
+    }
+  }
+}

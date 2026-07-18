@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../providers/auth_provider.dart';
 
 class SignUpScreen extends StatefulWidget {
-  final String? incomingCoachId;
-  const SignUpScreen({super.key, this.incomingCoachId});
+  final String? recruiterID;
+  const SignUpScreen({super.key, this.recruiterID});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -37,15 +37,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(height: 8),
 
                   // Display parsed coach connection context dynamically
-                  if (widget.incomingCoachId != null)
+                  if (widget.recruiterID != null)
                     Chip(
                       avatar: const Icon(
                         Icons.verified_user,
                         color: Colors.indigo,
                       ),
-                      label: Text(
-                        'Referred by Coach: ${widget.incomingCoachId}',
-                      ),
+                      label: Text('Referred by Member: ${widget.recruiterID}'),
                       backgroundColor: Colors.amber.withValues(alpha: 0.2),
                     ),
 
@@ -71,7 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             if (success && context.mounted) {
                               // Forward user directly to step 3 onboarding wizard
                               context.go(
-                                '/complete-profile?coach=${widget.incomingCoachId ?? "none"}',
+                                '/complete-profile?coach=${widget.recruiterID ?? "none"}',
                               );
                             }
                           },

@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart' as fb; // Safe prefix mapping
 import 'package:provider/provider.dart';
 
 // Update these strings to match your exact pubspec.yaml project name
+import 'providers/language_app_state.dart';
+import 'providers/location_app_state.dart';
 import 'routing/app_router.dart';
 import 'providers/auth_provider.dart';
 
@@ -33,7 +35,11 @@ void main() async {
 
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => AppAuthProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => AppAuthProvider()),
+        ChangeNotifierProvider(create: (_) => LocationAppState()),
+        ChangeNotifierProvider(create: (_) => LanguageAppState()),
+      ],
       child: const MyApp(),
     ),
   );

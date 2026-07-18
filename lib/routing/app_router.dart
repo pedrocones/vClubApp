@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 // Import your page modules here
+import '../screens/admin_dashboard_screen.dart';
 import '../screens/main_layout.dart';
 import '../screens/landing_hub_view.dart';
 import '../screens/about_us.dart';
@@ -90,12 +91,52 @@ class AppRouter {
           GoRoute(
             path: '/signup',
             builder: (context, state) {
-              final coachId = state
+              final incomingRecruiterID = state
                   .uri
-                  .queryParameters['coach']; // Extracts ?coach= from URL
-              return SignUpScreen(incomingCoachId: coachId);
+                  .queryParameters['memberID']; // Extracts ?memberId= from URL
+              return SignUpScreen(recruiterID: incomingRecruiterID);
             },
           ),
+
+          // 🛡️ Secured Admin Dashboard Console Route
+          GoRoute(
+            path: '/admin-dashboard',
+            builder: (BuildContext context, GoRouterState state) =>
+                const AdminDashboardScreen(),
+
+            /*             redirect: (BuildContext context, GoRouterState state) {
+              // 1. Set your authorization check variables FIRST
+              bool isMockUserAdmin = true; // Replace with your state management: userProfile.role == 'Admin'
+
+              // 2. Evaluate access logic and branch rules
+              if (!isMockUserAdmin) {
+                debugPrint(
+                  "🔒 Unauthorized access attempt recorded. Redirecting...",
+                );
+                return '/unauthorized'; // Reroute out instantly
+              }
+
+              // 3. CRITICAL: Put your fallback return null at the ABSOLUTE BOTTOM of the block.
+              // This lets the user through smoothly if they pass the admin check above.
+              return null;
+            }, */
+          ),
+
+          // 🔒 Unauthorized Access Catch Route
+          GoRoute(
+            path: '/unauthorized',
+            builder: (BuildContext context, GoRouterState state) =>
+                const Scaffold(
+                  body: Center(
+                    child: Text(
+                      "🔒 Access Denied.\nAdministrative privileges required.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16, height: 1.5),
+                    ),
+                  ),
+                ),
+          ),
+
           GoRoute(
             path: '/complete-profile',
             builder: (context, state) => const ProfileFormScreen(),
