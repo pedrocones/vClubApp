@@ -1,0 +1,166 @@
+{
+  "environment": {
+    "debug": {
+      "console_command": "firebase emulators:start --project demo-vicinum-project",
+      "firestore_emulator_host": "localhost:8080",
+      "project_id": "demo-vicinum-project"
+    },
+    "production": {
+      "firestore_emulator_host": null,
+      "project_id": "vicinum-production-id"
+    }
+  },
+  "schema": {
+    "countries": {
+      "primary_key": "country_iso3",
+      "fields": {
+        "country_iso2": { "type": "string", "required": true },
+        "country_iso3": { "type": "string", "required": true },
+        "country_name_local": { "type": "string", "required": true },
+        "country_name_en": { "type": "string", "required": true },
+        "country_name_es": { "type": "string", "required": false },
+        "country_name_fr": { "type": "string", "required": false },
+        "country_name_hi": { "type": "string", "required": false },
+        "country_name_ar": { "type": "string", "required": false },
+        "country_name_zn": { "type": "string", "required": false },
+        "isCountryOnboarded": { "type": "boolean", "required": false }
+      },
+    
+    "subdivisions": {
+      "primary_key": "subdivision_code",
+      "fields": {
+        "subdivision_code": { "type": "string", "required": true },
+        "country_iso2": { "type": "string", "required": true },
+        "country_iso3": { "type": "string", "required": true },
+        "subdivision_name_local": { "type": "string", "required": true },
+        "subdivision_name_en": { "type": "string", "required": true },
+        "subdivision_name_es": { "type": "string", "required": false },
+        "subdivision_name_fr": { "type": "string", "required": false },
+        "subdivision_name_hi": { "type": "string", "required": false },
+        "subdivision_name_ar": { "type": "string", "required": false },
+        "subdivision_zn": { "type": "string", "required": false },
+        "subdivision_category": { "type": "string", "required": true },
+        "isSubdivisionOnboarded": { "type": "boolean", "required": false }
+      }
+    },
+    "towns": {
+      "primary_key": "town_unicode",
+      "fields": {
+        "town_code": { "type": "string", "required": true },
+        "subdivision_code": { "type": "string", "required": true },
+        "town_unicode": { "type": "string", "required": true },
+        "town_name_local": { "type": "string", "required": true },
+        "town_name_en": { "type": "string", "required": true },
+        "town_name_es": { "type": "string", "required": false },
+        "town_name_fr": { "type": "string", "required": false },
+        "town_name_hi": { "type": "string", "required": false },
+        "town_name_ar": { "type": "string", "required": false },
+        "town_name_zn": { "type": "string", "required": false },        
+        "town_population": { "type": "int", "required": false },
+        "town_latitude": { "type": "double", "required": false },
+        "town_longitude": { "type": "double", "required": false }
+      }
+    },
+    "members": {
+      "primary_key": "member_id",
+      "fields": {
+        "member_id": { "type": "string", "required": true , "unique":true,"mutable":false,"member_id_hint":"auditable unique id"},
+        "username": { "type": "string", "required": true,"unique":true,"mutable":true,"member_username_hint":"Use with caution this can cause loss of features" },
+        "email": { "type": "string", "required": true,"unique":true },
+        "password_hash":{"type": "string", "required": true},
+        "town_unicode": { "type": "string", "required": true },
+        "latitude": { "type": "double", "required": true },
+        "longitude": { "type": "double", "required": true },
+        "member_status": { "type": "string", "required": true, "default": "rookie","member_status_hint": "Rookie->Verified->Active or Inactive" },
+        "reward_tree": {
+          "type": "map",
+          "required": true,
+          "fields": {
+            "recruiter_id": { "type": "string","required":true,"mutable":false,"default":"L0_admin","recruiter_hint":"Initial Referral scout new members, if blank default to admin they are inmutables" },
+            "coach_id": { "type": "string","mutable":true,"default":"L1_admin","coach_hint":"Coach must be nearby, same L1 locations to collect rewards from this tree if orphan rewards go to L1_admin" },
+            "mentor_id": { "type": "string","mutable":true,"default":"L2_admin","mentor_hint":"Mentor must be within same subdivision to collect rewards from this tree if orphan rewards go to L2_admin"},
+            "master_id": { "type": "string","mutable":true,"default":"L3_admin", "master_hint":"Master must be within same Country to collect rewards from this tree if orphan rewards go to L3_admin"},
+            "verification_trace":{
+              "type":"map",
+              "required":false,
+              "fields":{
+                "verificator_id":{"type":"string","required":false,"verificator_hint":"a Coach ID who facilitate the verification process"},
+                "document_id":{"type":"string","required":false},
+                "document_expiration_date":{"type":"timestamp","required":false},
+                "picture_url":{"type":"string","required":false,"picture_url_hint":"Member visible picture with legible official document as trace on verification"}
+              }
+          }
+           }
+        },
+        "member_profile": {
+          "type": "map",
+          "required": true,
+            "fields": {
+            "first_name": { "type": "string", "required": false },
+            "last_name": { "type": "string", "required": false },
+            "profile_icon_url": { "type": "string", "required": false },
+            "phone": { "type": "string", "required": false },
+            "preferences": { 
+              "type": "map", 
+              "required": true,
+              "fields": {      
+                "is_anonymous": { "type": "boolean", "required": true, "default": false }, 
+                "language":{"type":"string","required":true,"default":"en"}
+              }
+            },
+            "address": {
+              "type": "map",
+              "required": false,
+              "fields": {
+              "street": { "type": "string" },
+              "city": { "type": "string" },
+              "state_province": { "type": "string" },
+              "postal_code": { "type": "string" },
+              "country_name": { "type": "string" }
+              }
+            }
+          }
+        },
+    "subcollections": {
+      "donations_given": {
+        "primary_key": "donation_id",
+        "fields": {
+          "campaign_id": { "type": "string", "required": true },
+          "amount": { "type": "double", "required": true },
+          "currency": { "type": "string", "required": true, "default": "vCoin" },
+          "timestamp": { "type": "timestamp", "required": true }
+        }
+      },
+      "volunteering_given": {
+        "primary_key": "attendance_id",
+        "fields": {
+          "opportunity_id": { "type": "string", "required": true },
+          "hours": { "type": "double", "required": true },
+          "status": { "type": "string", "required": true, "default": "pending" ,"volunteering_hint":"Org Managers need to approve hours and allowance"},
+          "date": { "type": "date", "required": true }
+        }
+      },
+      "wallet_vcoin": {
+        "primary_key": "wallet_id",
+        "wallet_id":{ "type": "string", "required": true,"unique":true,"wallet_id_hint":"unique if constructed Wallet+{currency} it will be accessed only through member object hence no UUI valuet. Default wallet to collect and share vCoin as per now. Wallets might be expandable in future to USD, CAD and others"},
+        "member_id":{ "type": "string", "required": true,"unique":true,"wallet_id_hint":"Foreign-key for searchability and audit"},
+        "currency": { "type": "string", "required": true, "default":"vcoin","currency_hint":"Default wallet to collect and share vCoin as per now. Wallets might be expandable in future to USD, CAD and others"},   
+          "subcollections": {
+            "primary_key": "wallet_id",
+            "ledger_entries": { 
+              "type": "map", 
+              "required": false,
+              "fields":{
+                "entry_id": { "type": "string", "required": true, "mutable":false,"wallet_id_hint":"constructed unique {member_id}-{currency}"}, 
+                "wallet_id": { "type": "string", "required": true, "mutable":false,"wallet_id_hint":"constructed unique {member_id}-{currency}"}, 
+                "amount": { "type": "signed integer", "required": true, "mutable":false,"wallet_id_hint":"constructed unique {member_id}-{currency}"}, 
+                "type": { "type": "string", "required": true, "mutable":false,"wallet_id_hint":"constructed unique {member_id}-{currency}"}, 
+                "created_at": { "type": "string", "required": true, "mutable":false,"wallet_id_hint":"constructed unique {member_id}-{currency}"} 
+              }        
+            } 
+          }
+    }
+  }  
+}
+}
+}
