@@ -26,7 +26,7 @@ class ClubProvider extends ChangeNotifier {
       description:
           'Join your neighbors at the central park commons for our monthly green space restoration day.',
       date: 'Saturday, Aug 15 at 9:00 AM',
-      assetImage: 'Assets/img/stongerTogether.png',
+      assetImage: 'assets/branding/strongerTogether.png',
     ),
     ClubEvent(
       id: 'ev-2',
@@ -34,7 +34,7 @@ class ClubProvider extends ChangeNotifier {
       description:
           'Help us grow our local footprint! Learn about volunteer tiers, local sponsorships, and civic benefits.',
       date: 'Friday, Sep 4 at 6:00 PM',
-      assetImage: 'Assets/img/vicinumShield_TranspBG.png',
+      assetImage: 'assets/branding/vicinumShield_TranspBG.png',
     ),
   ];
 
@@ -58,34 +58,3 @@ class ClubProvider extends ChangeNotifier {
     notifyListeners(); // Tells Flutter screens to automatically redraw with new data
   }
 }
-
-/* 
-
-How to feed this dynamic data into your Home viewNow, any page wrapped inside 
-your MainLayout shell can easily read this list instead of showing a static grid. 
-For example, you can implement a standard list feed directly inside your 
-home layout using context.watch:
-
-@override
-Widget build(BuildContext context) {
-  // Automatically listens to your ClubProvider data state engine
-  final clubProvider = context.watch<ClubProvider>();
-  final events = clubProvider.localEvents;
-
-  if (clubProvider.isLoading) {
-    return const Center(child: CircularProgressIndicator());
-  }
-
-  return ListView.builder(
-    itemCount: events.length,
-    itemBuilder: (context, index) {
-      final event = events[index];
-      return ListTile(
-        title: Text(event.title),
-        subtitle: Text(event.date),
-      );
-    },
-  );
-}
-
- */

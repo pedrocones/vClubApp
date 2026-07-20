@@ -1,0 +1,192 @@
+Folder PATH listing for volume Local Disk
+Volume serial number is 28D0-C244
+C:.
++---.agents
+¦   +---skills
+¦       +---firebase-ai-logic-basics
+¦       ¦   +---references
+¦       +---firebase-app-hosting-basics
+¦       ¦   +---references
+¦       +---firebase-auth-basics
+¦       ¦   +---references
+¦       +---firebase-basics
+¦       ¦   +---references
+¦       ¦       +---refresh
+¦       ¦       +---setup
+¦       +---firebase-crashlytics
+¦       ¦   +---references
+¦       +---firebase-data-connect
+¦       ¦   +---reference
+¦       +---firebase-firestore
+¦       ¦   +---references
+¦       ¦       +---enterprise
+¦       ¦       +---standard
+¦       +---firebase-hosting-basics
+¦       ¦   +---references
+¦       +---firebase-remote-config-basics
+¦       ¦   +---references
+¦       +---firebase-security-rules-auditor
+¦       +---xcode-project-setup
+¦           +---scripts
+¦               +---xcode_spm_setup
+¦                   +---Sources
++---.dart_tool
+¦   +---chrome-device
+¦   ¦   +---Default
+¦   ¦       +---AutofillStrikeDatabase
+¦   ¦       +---blob_storage
+¦   ¦       ¦   +---527b7dfc-dce6-4c07-8359-e96a349f1172
+¦   ¦       +---BudgetDatabase
+¦   ¦       +---chrome_cart_db
+¦   ¦       +---ClientCertificates
+¦   ¦       +---commerce_subscription_db
+¦   ¦       +---discounts_db
+¦   ¦       +---discount_infos_db
+¦   ¦       +---Download Service
+¦   ¦       ¦   +---EntryDB
+¦   ¦       ¦   +---Files
+¦   ¦       +---Extension Rules
+¦   ¦       +---Extension Scripts
+¦   ¦       +---Extension State
+¦   ¦       +---Feature Engagement Tracker
+¦   ¦       ¦   +---AvailabilityDB
+¦   ¦       ¦   +---EventDB
+¦   ¦       +---GCM Store
+¦   ¦       ¦   +---Encryption
+¦   ¦       +---IndexedDB
+¦   ¦       ¦   +---http_localhost_56981.indexeddb.leveldb
+¦   ¦       +---Local Storage
+¦   ¦       ¦   +---leveldb
+¦   ¦       +---Network
+¦   ¦       +---optimization_guide_hint_cache_store
+¦   ¦       +---parcel_tracking_db
+¦   ¦       +---PersistentOriginTrials
+¦   ¦       +---Safe Browsing Network
+¦   ¦       +---Segmentation Platform
+¦   ¦       ¦   +---SegmentInfoDB
+¦   ¦       ¦   +---SignalDB
+¦   ¦       ¦   +---SignalStorageConfigDB
+¦   ¦       +---Service Worker
+¦   ¦       ¦   +---Database
+¦   ¦       +---Session Storage
+¦   ¦       +---Sessions
+¦   ¦       +---Shared Dictionary
+¦   ¦       ¦   +---cache
+¦   ¦       ¦       +---index-dir
+¦   ¦       +---shared_proto_db
+¦   ¦       ¦   +---metadata
+¦   ¦       +---Site Characteristics Database
+¦   ¦       +---Sync Data
+¦   ¦       ¦   +---LevelDB
+¦   ¦       +---WebStorage
+¦   +---dartpad
+¦   +---extension_discovery
++---.firebase
++---.github
+¦   +---workflows
++---.idea
+¦   +---libraries
+¦   +---runConfigurations
++---.vscode
++---android
+¦   +---.gradle
+¦   ¦   +---9.1.0
+¦   ¦   ¦   +---checksums
+¦   ¦   ¦   +---executionHistory
+¦   ¦   ¦   +---expanded
+¦   ¦   ¦   +---fileChanges
+¦   ¦   ¦   +---fileHashes
+¦   ¦   ¦   +---vcsMetadata
+¦   ¦   +---buildOutputCleanup
+¦   ¦   +---noVersion
+¦   ¦   +---vcs-1
+¦   +---.kotlin
+¦   ¦   +---sessions
+¦   +---app
+¦   ¦   +---src
+¦   ¦       +---debug
+¦   ¦       +---main
+¦   ¦       ¦   +---java
+¦   ¦       ¦   ¦   +---io
+¦   ¦       ¦   ¦       +---flutter
+¦   ¦       ¦   ¦           +---plugins
+¦   ¦       ¦   +---kotlin
+¦   ¦       ¦   ¦   +---com
+¦   ¦       ¦   ¦       +---example
+¦   ¦       ¦   ¦           +---vclubapp_web
+¦   ¦       ¦   +---res
+¦   ¦       ¦       +---drawable
+¦   ¦       ¦       +---drawable-v21
+¦   ¦       ¦       +---mipmap-hdpi
+¦   ¦       ¦       +---mipmap-mdpi
+¦   ¦       ¦       +---mipmap-xhdpi
+¦   ¦       ¦       +---mipmap-xxhdpi
+¦   ¦       ¦       +---mipmap-xxxhdpi
+¦   ¦       ¦       +---values
+¦   ¦       ¦       +---values-night
+¦   ¦       +---profile
+¦   +---gradle
+¦       +---wrapper
++---assets
+¦   +---branding
+¦   +---fonts
+¦   +---location
+¦   ¦   +---flags
+¦   +---members
+¦   +---shared
+¦       +---icons
++---build
+¦   +---d7df783fc8fa9227d28ad68a73ee65d5
+¦   +---e8fcc8d3d3a389f93f60cdc0b464b26e
+¦   +---flutter_assets
+¦       +---fonts
+¦       +---packages
+¦       ¦   +---cupertino_icons
+¦       ¦       +---assets
+¦       +---shaders
++---functions
+¦   +---.dart_tool
+¦   ¦   +---extension_discovery
+¦   +---bin
++---lib
+¦   +---api
+¦   ¦   +---abstracts
+¦   ¦   +---commands
+¦   ¦   +---queries
+¦   +---core
+¦   +---design
+¦   ¦   +---Constrains
+¦   ¦   +---Datasets
+¦   ¦   +---Flowcharts
+¦   ¦   +---Prompts
+¦   +---gen
+¦   +---models
+¦   ¦   +---countries
+¦   ¦   +---members
+¦   ¦   ¦   +---bank_accounts
+¦   ¦   ¦   +---donations_given
+¦   ¦   ¦   +---vcoin_exchange
+¦   ¦   ¦   +---vcoin_ledger
+¦   ¦   ¦   +---volunteering_hours
+¦   ¦   +---subdivisions
+¦   ¦   +---towns
+¦   ¦   +---usernames
+¦   +---providers
+¦   +---routing
+¦   +---screens
+¦   +---services
+¦   +---widgets
++---test
+¦   +---models
+¦       +---countries
+¦       +---members
+¦       ¦   +---bank_accounts
+¦       ¦   +---donations_given
+¦       ¦   +---vcoin_exchange
+¦       ¦   +---vcoin_ledger
+¦       ¦   +---volunteering_hours
+¦       +---subdivisions
+¦       +---towns
+¦       +---usernames
++---web
+    +---icons

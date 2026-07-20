@@ -12,7 +12,8 @@
   },
   "schema": {
       "usernames": {
-        "username": { "type": "string", "required": true, "unique":true,"username_hint":"shadow collection to facilitate uniquess of usernames during registration" }
+        "username": { "type": "string", "required": true, "unique":true,"username_hint":"shadow collection to facilitate uniquess of usernames during registration" },
+        "member_id": { "type": "string", "required": true, "unique":true,"member_id":"might not be necessary for this light collection but added now in case necessary for other features" }
     },
     "countries": {
       "primary_key": "country_iso3",

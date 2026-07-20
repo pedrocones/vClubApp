@@ -5,19 +5,19 @@
         "Home": 
         {
             "topMenu": "HMI/Menus/TopMenue.dart",
-            "body":"HMI/Pages/Home.dart" 
+            "body":"HMI/Pages/Home.dart"
             {
                 "donate": "HMI/Form/DonateForm.dart" {
-                    "img":"Assets/img/donate.png"
+                    "img":"assets/branding/donate.png"
                 },
                 "volunteer": "HMI/From/Volunteer.dart" {
-                    "ing":"Assets/img/stongerTogether.png"
+                    "ing":"assets/branding/stongerTogether.png"
                 },
                 "membership":"HMI/From/Membership.dart"{
-                    "img":"Assets/img/vicinumShiel_TranspBG.png"
-                },
+                    "img":"assets/branding//vicinumShiel_TranspBG.png"
+                }
             },
-            "bottomMenu":"HMI/Menus/BottomMenue.dart",
+            "bottomMenu":"HMI/Menus/BottomMenue.dart"
         }  
     }
 }

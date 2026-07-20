@@ -13,19 +13,19 @@ class LandingHubView extends StatelessWidget {
     final List<Map<String, dynamic>> items = [
       {
         'title': 'Donate',
-        'image': 'Assets/img/donate.png',
+        'image': '../../assets/branding/donate.png',
         'icon': 'favorite',
         'path': '/donate',
       },
       {
         'title': 'Volunteer',
-        'image': 'Assets/img/stongerTogether.png',
+        'image': '../../assets/branding/strongerTogether.png',
         'icon': 'groups',
         'path': '/volunteer',
       },
       {
         'title': 'Membership',
-        'image': 'Assets/img/vicinumShield_TranspBG.png',
+        'image': '../../assets/branding/vicinumShield_TranspBG.png',
         'icon': 'shield',
         'path': '/membership',
       },

@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
             title: Row(
               children: [
                 Image.asset(
-                  'Assets/img/vicinumShield_TranspBG.png',
+                  '../../assets/branding/vicinumShield_TranspBG.png',
                   height: 32,
                   errorBuilder: (context, error, stackTrace) =>
                       const Icon(Icons.shield, color: Colors.amber, size: 28),

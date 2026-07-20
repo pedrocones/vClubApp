@@ -7,8 +7,9 @@ import 'package:provider/provider.dart';
 // Update these strings to match your exact pubspec.yaml project name
 import 'providers/language_app_state.dart';
 import 'providers/location_app_state.dart';
-import 'routing/app_router.dart';
 import 'providers/auth_provider.dart';
+import 'routing/app_router.dart';
+//import 'providers/club_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

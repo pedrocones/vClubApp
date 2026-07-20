@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../api/abstract_donate_service.dart';
-import '../../api/mock_services_registry.dart';
+import '../api/abstracts/abstract_donate_service.dart';
+import '../api/abstracts/mock_services_registry.dart';
 
 class DonateLoggedPage extends StatefulWidget {
   final AbstractDonateService donateService;

@@ -24,7 +24,7 @@ class MainTopBar extends StatelessWidget implements PreferredSizeWidget {
       title: Row(
         children: [
           Image.asset(
-            'Assets/img/vicinumShield_TranspBG.png',
+            '../assets/branding/vicinumShield_TranspBG.png',
             height: 32,
             width: 32,
             fit: BoxFit.contain,

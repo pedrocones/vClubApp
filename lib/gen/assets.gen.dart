@@ -27,28 +27,28 @@ class $LibAssetsGen {
   /// Directory path: lib/Assets/icons
   $LibAssetsIconsGen get icons => const $LibAssetsIconsGen();
 
-  /// Directory path: lib/Assets/img
+  /// Directory path: assets/branding
   $LibAssetsImgGen get img => const $LibAssetsImgGen();
 }
 
 class $LibAssetsFlagsGen {
   const $LibAssetsFlagsGen();
 
-  /// File path: lib/Assets/flags/en-CA-250x125.png
+  /// File path: assets/location/flags/en-CA-250x125.png
   AssetGenImage get enCA250x125 =>
-      const AssetGenImage('lib/Assets/flags/en-CA-250x125.png');
+      const AssetGenImage('assets/location/flags/en-CA-250x125.png');
 
-  /// File path: lib/Assets/flags/en-UK-256x128.png
+  /// File path: assets/location/flags/en-UK-256x128.png
   AssetGenImage get enUK256x128 =>
-      const AssetGenImage('lib/Assets/flags/en-UK-256x128.png');
+      const AssetGenImage('assets/location/flags/en-UK-256x128.png');
 
-  /// File path: lib/Assets/flags/es-ES-250x167.png
+  /// File path: assets/location/flags/es-ES-250x167.png
   AssetGenImage get esES250x167 =>
-      const AssetGenImage('lib/Assets/flags/es-ES-250x167.png');
+      const AssetGenImage('assets/location/flags/es-ES-250x167.png');
 
-  /// File path: lib/Assets/flags/fr-FR-250x167.png
+  /// File path: assets/location/flags/fr-FR-250x167.png
   AssetGenImage get frFR250x167 =>
-      const AssetGenImage('lib/Assets/flags/fr-FR-250x167.png');
+      const AssetGenImage('assets/location/flags/fr-FR-250x167.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [
@@ -141,30 +141,30 @@ class $LibAssetsIconsGen {
 class $LibAssetsImgGen {
   const $LibAssetsImgGen();
 
-  /// File path: lib/Assets/img/donate.png
-  AssetGenImage get donate => const AssetGenImage('lib/Assets/img/donate.png');
+  /// File path: assets/branding/donate.png
+  AssetGenImage get donate => const AssetGenImage('assets/branding/donate.png');
 
-  /// File path: lib/Assets/img/neigborhood 100x100.png
-  AssetGenImage get neigborhood100x100 =>
-      const AssetGenImage('lib/Assets/img/neigborhood 100x100.png');
+  /// File path: assets/branding/neigborhood 100x100.png
+  AssetGenImage get neighborhood_100x100 =>
+      const AssetGenImage('assets/branding/neighborhood_100x100.png');
 
-  /// File path: lib/Assets/img/stongerTogether.png
-  AssetGenImage get stongerTogether =>
-      const AssetGenImage('lib/Assets/img/stongerTogether.png');
+  /// File path: assets/branding/stongerTogether.png
+  AssetGenImage get strongerTogether =>
+      const AssetGenImage('assets/branding/stongerTogether.png');
 
-  /// File path: lib/Assets/img/vicinumShiel_TranspBG.png
+  /// File path: assets/branding/vicinumShiel_TranspBG.png
   AssetGenImage get vicinumShielTranspBG =>
-      const AssetGenImage('lib/Assets/img/vicinumShiel_TranspBG.png');
+      const AssetGenImage('assets/branding/vicinumShiel_TranspBG.png');
 
-  /// File path: lib/Assets/img/vicinumShield_whiteBG.png
+  /// File path: assets/branding/vicinumShield_whiteBG.png
   AssetGenImage get vicinumShieldWhiteBG =>
-      const AssetGenImage('lib/Assets/img/vicinumShield_whiteBG.png');
+      const AssetGenImage('assets/branding/vicinumShield_whiteBG.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [
     donate,
-    neigborhood100x100,
-    stongerTogether,
+    neighborhood_100x100,
+    strongerTogether,
     vicinumShielTranspBG,
     vicinumShieldWhiteBG,
   ];

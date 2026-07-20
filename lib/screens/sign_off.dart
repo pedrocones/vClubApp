@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SignOffPage extends StatelessWidget {
   const SignOffPage({super.key});
@@ -44,7 +45,8 @@ class SignOffPage extends StatelessWidget {
                 ),
                 onPressed: () {
                   // Pops this page stack layer to route back to the clean home entry point
-                  Navigator.pop(context);
+                  //Navigator.pop(context);
+                  context.go('/');
                 },
                 icon: const Icon(Icons.login),
                 label: const Text(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import '../../api/abstract_contact_service.dart';
-import '../../api/mock_services_registry.dart';
+import '../api/abstracts/abstract_contact_service.dart';
+import '../api/abstracts/mock_services_registry.dart';
 
 class ContactUsPage extends StatefulWidget {
   final AbstractContactService contactService;

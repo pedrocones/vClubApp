@@ -1,5 +1,5 @@
 import 'dart:async';
-import '../api/abstract_donate_service.dart';
+import 'abstract_donate_service.dart';
 
 class MockDonateService implements AbstractDonateService {
   // Simulates a Firestore "donations" collection array registry
