@@ -1,79 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/language_app_state.dart'; // Mapped cleanly to your providers folder paths
+import '../providers/auth_provider.dart';
 
 class LanguageSelectorWidget extends StatelessWidget {
   const LanguageSelectorWidget({super.key});
 
+  static const Map<String, Map<String, String>> langMetadata = {
+    'en': {'flag': '🇺🇸', 'name': 'ENG'},
+    'es': {'flag': '🇪🇸', 'name': 'ESP'},
+    'fr': {'flag': '🇫🇷', 'name': 'FRA'},
+    'hi': {'flag': '🇮🇳', 'name': 'HIN'},
+    'ar': {'flag': '🇸🇦', 'name': 'ARA'},
+    'zn': {'flag': '🇨🇳', 'name': 'ZHO'},
+  };
+
   @override
   Widget build(BuildContext context) {
-    final languageState = context.watch<LanguageAppState>();
-    final currentLang = languageState.currentLanguageCode;
+    // 1. Watch the provider for the current session language
+    final auth = context.watch<AppAuthProvider>();
+    final currentLang = auth.currentLanguage;
+    final metadata = langMetadata[currentLang] ?? langMetadata['en']!;
 
-    // Localized hover configurations
-    final String tooltipMessage = currentLang == 'es'
-        ? 'Cambiar idioma del sistema'
-        : 'Change system language';
-
-    return Tooltip(
-      message: tooltipMessage,
-      waitDuration: const Duration(
-        milliseconds: 600,
-      ), // Standard delay boundary before displaying tooltip
-      child: PopupMenuButton<String>(
-        // 💡 FIXED: 'value' changed to 'initialValue' to match standard PopupMenuButton properties
-        initialValue: currentLang,
-        icon: Row(
-          mainAxisSize: MainAxisSize.min,
+    return PopupMenuButton<String>(
+      tooltip: "Change Language",
+      onSelected: (String newLang) {
+        // 2. Update the provider (Session only)
+        context.read<AppAuthProvider>().updateLanguage(newLang);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        child: Row(
           children: [
-            Text(
-              currentLang == 'es' ? '🇪🇸' : '🇺🇸',
-              style: const TextStyle(fontSize: 18),
-            ),
+            Text(metadata['flag']!, style: const TextStyle(fontSize: 20)),
             const SizedBox(width: 6),
             Text(
-              currentLang == 'es' ? 'ESP' : 'ENG',
+              metadata['name']!,
               style: const TextStyle(
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 13,
-                color: Colors.blue,
               ),
             ),
-            const Icon(Icons.arrow_drop_down, size: 16, color: Colors.blue),
+            const Icon(Icons.arrow_drop_down, color: Colors.white70, size: 18),
           ],
         ),
-        onSelected: (String nextLanguageCode) {
-          context.read<LanguageAppState>().updateLanguage(nextLanguageCode);
-        },
-        itemBuilder: (BuildContext context) => [
-          const PopupMenuItem<String>(
-            value: 'en',
-            child: Row(
-              children: [
-                Text('🇺🇸 ', style: TextStyle(fontSize: 16)),
-                SizedBox(width: 8),
-                Text(
-                  'English (ENG)',
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-              ],
-            ),
-          ),
-          const PopupMenuItem<String>(
-            value: 'es',
-            child: Row(
-              children: [
-                Text('🇪🇸 ', style: TextStyle(fontSize: 16)),
-                SizedBox(width: 8),
-                Text(
-                  'Español (ESP)',
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
+      itemBuilder: (context) => langMetadata.entries.map((entry) {
+        return PopupMenuItem<String>(
+          value: entry.key,
+          child: Row(
+            children: [
+              Text(entry.value['flag']!),
+              const SizedBox(width: 12),
+              Text(entry.value['name']!),
+            ],
+          ),
+        );
+      }).toList(),
     );
   }
 }

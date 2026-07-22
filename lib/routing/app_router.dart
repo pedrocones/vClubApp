@@ -8,6 +8,7 @@ import '../screens/landing_hub_view.dart';
 import '../screens/about_us.dart';
 import '../screens/donate.dart';
 import '../screens/donate_logged.dart';
+import '../screens/sign_in_screen.dart';
 import '../screens/volunteer_screen.dart';
 import '../screens/volunteer_logged.dart';
 import '../screens/membership_screen.dart';
@@ -94,11 +95,22 @@ class AppRouter {
             builder: (context, state) => const SystemSettingsPage(),
           ),
           GoRoute(
+            path: '/signin',
+            builder: (context, state) {
+              final recruiterID = state.uri.queryParameters['memberID'];
+              return SignInScreen(recruiterID: recruiterID);
+            },
+          ),
+          GoRoute(
             path: '/signup',
             builder: (context, state) {
               final recruiterID = state.uri.queryParameters['memberID'];
               return SignUpScreen(recruiterID: recruiterID);
             },
+          ),
+          GoRoute(
+            path: '/contact_us',
+            builder: (context, state) => ContactUsPage(),
           ),
         ],
       ),
@@ -106,11 +118,6 @@ class AppRouter {
         path: '/sign-off',
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => const SignOffPage(),
-      ),
-      GoRoute(
-        path: '/contact_us',
-        parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) => ContactUsPage(),
       ),
     ],
   );

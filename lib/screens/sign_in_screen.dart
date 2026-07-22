@@ -4,22 +4,21 @@ import 'package:go_router/go_router.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/signup_incentive.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignInScreen extends StatefulWidget {
   final String? recruiterID;
-  const SignUpScreen({super.key, this.recruiterID});
+  const SignInScreen({super.key, this.recruiterID});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignInScreenState extends State<SignInScreen> {
   final _email = TextEditingController();
   final _pass = TextEditingController();
-  final _location = TextEditingController();
 
   //mock-up location while we develop widget
   // 1. Placeholder for the selected location (Defaulting to your visitor town)
-  // final String _selectedTownUnicode = "US-CA-M0180";
+  //final String _selectedTownUnicode = "US-CA-M0180";
 
   @override
   Widget build(BuildContext context) {
@@ -48,31 +47,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
             decoration: const InputDecoration(labelText: "Password"),
             obscureText: true,
           ),
-          TextField(
-            controller: _location,
-            decoration: const InputDecoration(
-              labelText: "Location unicode US-CA-M0180",
-            ),
-
-            obscureText: false,
-          ),
           const SizedBox(height: 20),
           authProv.isLoading
               ? const Center(child: CircularProgressIndicator())
               : ElevatedButton(
                   onPressed: () async {
-                    bool success = await authProv.signUpWithEmail(
-                      email: _email.text.trim(),
-                      password: _pass.text.trim(),
-                      townUnicode: _location.text.trim(), // Passed to provider
-                      recruiterID:
-                          widget.recruiterID, // Passed from URL state [7]
-                    );
+                    //bool success = await authProv.signInWithEmail()
+                    //mock up sign-in success = true,
+                    bool success = true;
                     if (success && context.mounted) {
                       context.go('/membership');
                     }
                   },
-                  child: const Text('ACTIVATE ROOKIE PASS'),
+                  child: const Text('SIGNED IN'),
                 ),
         ],
       ),

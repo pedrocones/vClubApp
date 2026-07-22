@@ -8,12 +8,29 @@ class AppAuthProvider with ChangeNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   late MemberModel _member;
+
   User? _firebaseUser;
   bool _isLoading = false;
 
+  // 1. Session-only language state
+  late String _currentLanguage;
+  String get currentLanguage => _currentLanguage;
+
   AppAuthProvider() {
     _member = _createDefaultGuest(); // Initialize as GUEST_admin_L0
+    // Initialize session language from the member profile (default 'en') [1]
+    _currentLanguage = _member.member_profile['language'] ?? 'en';
+
     _auth.authStateChanges().listen(_onAuthStateChanged);
+  }
+
+  // 2. Resolve Compiler Error: Define updateLanguage
+  void updateLanguage(String langCode) {
+    _currentLanguage = langCode;
+    debugPrint(
+      "🔍 AUTH_TRACE: Session language updated to $langCode (Not synced to DB)",
+    );
+    notifyListeners(); // Triggers UI update across the app
   }
 
   // Getters
@@ -61,11 +78,20 @@ class AppAuthProvider with ChangeNotifier {
       final doc = await _db.collection('members').doc(uid).get();
       if (doc.exists && doc.data() != null) {
         _member = MemberModel.fromJson(doc.data()!);
+        // Sync temporary session to their saved preference upon login [Conversation History]
+        _currentLanguage = _member.member_profile['language'] ?? 'en';
+        debugPrint(
+          "✅ AUTH_TRACE: Profile loaded. Session language sync'd to: $_currentLanguage",
+        );
+      } else {
+        _member = _createDefaultGuest();
+        _currentLanguage = 'en'; // Fallback for Guest
       }
     } catch (e) {
       debugPrint("❌ AUTH_TRACE: Error fetching member: $e");
       _member = _createDefaultGuest();
     }
+    notifyListeners(); // Forces Top Bar and Widget to rebuild with the correct flag
   }
 
   // Email-First Signup Logic [Conversation History, 807]
