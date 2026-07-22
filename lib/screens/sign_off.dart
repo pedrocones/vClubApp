@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 
 class SignOffPage extends StatelessWidget {
   const SignOffPage({super.key});
@@ -44,10 +46,12 @@ class SignOffPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
                 onPressed: () {
-                  // Pops this page stack layer to route back to the clean home entry point
-                  //Navigator.pop(context);
-                  context.go('/');
+                  context
+                      .read<AppAuthProvider>()
+                      .logout(); // Triggers real signOut + Guest reset
+                  context.go('/'); // Redirect to landing
                 },
+
                 icon: const Icon(Icons.login),
                 label: const Text(
                   'Return to Console Hub',

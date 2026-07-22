@@ -6,7 +6,7 @@ from google.auth.credentials import AnonymousCredentials
 
 # Setup
 os.environ["FIRESTORE_EMULATOR_HOST"] = "localhost:8080"
-BASE_PATH = "lib/design/Datasets"
+BASE_PATH = "lib/design/datasets"
 
 # Initialize
 firebase_admin.initialize_app(AnonymousCredentials(), options={'projectId': 'demo-vicinum-project'})

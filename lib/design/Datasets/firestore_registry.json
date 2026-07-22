@@ -11,17 +11,14 @@
     }
   },
   "schema": {
-      "usernames": {
-        "username": { "type": "string", "required": true, "unique":true,"username_hint":"shadow collection to facilitate uniquess of usernames during registration" },
-        "member_id": { "type": "string", "required": true, "unique":true,"member_id":"might not be necessary for this light collection but added now in case necessary for other features" }
-    },
+
     "countries": {
       "primary_key": "country_iso3",
       "fields": {
-        "country_iso2": { "type": "string", "required": true },
-        "country_iso3": { "type": "string", "required": true },
-        "country_name_local": { "type": "string", "required": true },
-        "country_name_en": { "type": "string", "required": true },
+        "country_iso2": { "type": "string", "required": true, "nullable": false },
+        "country_iso3": { "type": "string", "required": true, "nullable": false },
+        "country_name_local": { "type": "string", "required": true, "nullable": false },
+        "country_name_en": { "type": "string", "required": true, "nullable": false },
         "country_name_es": { "type": "string", "required": false },
         "country_name_fr": { "type": "string", "required": false },
         "country_name_hi": { "type": "string", "required": false },
@@ -33,10 +30,10 @@
     "subdivisions": {
       "primary_key": "subdivision_code",
       "fields": {
-        "subdivision_code": { "type": "string", "required": true },
-        "country_iso3": { "type": "string", "required": true },
-        "subdivision_name_local": { "type": "string", "required": true },
-        "subdivision_name_en": { "type": "string", "required": true },
+        "subdivision_code": { "type": "string", "required": true, "nullable": false },
+        "country_iso3": { "type": "string", "required": true , "nullable": false},
+        "subdivision_name_local": { "type": "string", "required": true , "nullable": false},
+        "subdivision_name_en": { "type": "string", "required": true , "nullable": false},
         "subdivision_name_es": { "type": "string", "required": false },
         "subdivision_name_fr": { "type": "string", "required": false },
         "subdivision_name_hi": { "type": "string", "required": false },
@@ -48,36 +45,37 @@
     "towns": {
       "primary_key": "town_unicode",
       "fields": {
-        "town_unicode": { "type": "string", "required": true },
-        "subdivision_code": { "type": "string", "required": true },
-        "town_name_local": { "type": "string", "required": true },
-        "town_name_en": { "type": "string", "required": true },
+        "town_unicode": { "type": "string", "required": true, "nullable": false },
+        "subdivision_code": { "type": "string", "required": true, "nullable": false },
+        "town_name_local": { "type": "string", "required": true, "nullable": false },
+        "town_name_en": { "type": "string", "required": true, "nullable": false },
         "town_name_es": { "type": "string", "required": false },
         "town_name_fr": { "type": "string", "required": false },
         "town_name_hi": { "type": "string", "required": false },
         "town_name_ar": { "type": "string", "required": false },
         "town_name_zn": { "type": "string", "required": false },   
         "town_population": { "type": "int", "required": false, "default": 0 },
-        "latitude": { "type": "double", "required": true },
-        "longitude": { "type": "double", "required": true }
+        "latitude": { "type": "double", "required": false },
+        "longitude": { "type": "double", "required":false }
       }
     },
     "members": {
       "primary_key": "member_id",
       "fields": {
-        "member_id": { "type": "string", "required": true, "mutable": false },
-        "username": { "type": "string", "required": true, "mutable": false },
-        "email": { "type": "string", "required": true, "mutable": true },
-        "town_unicode": { "type": "string", "required": true },
-        "member_status": { "type": "string", "required": true, "default": "rookie" },
+        "member_id": { "type": "string", "required": true, "mutable": false ,"nullable": false,"hint":"using Firebase SDK to ensure unique value"},
+        "username": { "type": "string", "required": false, "mutable": true , "nullable": true,"mockup_value":"new_username","hint":"Username are decorators as benefits from Ambassadors up"},
+        "email": { "type": "string", "required": true, "mutable": true,"nullable": false, "mockup_value":"new_email","hint":"through error and comeback to signup page if existing email match new" },
+        "town_unicode": { "type": "string", "required": true, "nullable": false, "mockup_value":"US-CA-M0180", "hint":"Marina del Rey unicode set as mockup value" },           
+        "member_status": { "type": "List", "required": true, "nullable": false, "default": "rookie", "options":"Rookie,Ambassador,Associated,Overdue,Banned"},
+        "vcoin_balance": { "type": "double", "required": true,"mutable":true, "nullable": false,"default":0,"hint":"balance from subcollection ledger" },
         "reward_tree": {
           "type": "map",
           "required": true,
           "fields": {
-            "recruiter_id": { "type": "string", "required": true, "default": "admin_L0" },
-            "coach_id": { "type": "string", "required": true, "default": "admin_L1" },
-            "mentor_id": { "type": "string", "required": true, "default": "admin_L2" },
-            "master_id": { "type": "string", "required": true, "default": "admin_L3" }
+            "recruiter_id": { "type": "string", "required": true, "nullable": false,"default": "admin_L1" },
+            "coach_id": { "type": "string", "required": true, "nullable": false, "default": "admin_L1" },
+            "mentor_id": { "type": "string", "required": true,"nullable": false, "default": "admin_L2" },
+            "master_id": { "type": "string", "required": true, "nullable": false,"default": "admin_L3" }
           }
         },
         "member_profile": {
@@ -108,42 +106,44 @@
         "donations_given": {
           "primary_key": "donation_id",
           "fields": {
-            "campaign_id": { "type": "string", "required": true },
-            "original_currency": { "type": "string", "required": true, "default": "vCoin" },
-            "fx_rate": { "type": "double", "required": false, "default": 1.0 },
-            "amount_vcoin": { "type": "double", "required": true },
-            "timestamp": { "type": "timestamp", "required": true }
+            "campaign_id": { "type": "string", "required": true, "nullable": false },
+            "original_currency": { "type": "string", "required": true, "nullable": false, "default": "vCoin" },
+            "fx_rate": { "type": "double", "required": true, "nullable": false, "default": 1.0 },
+            "amount_vcoin": { "type": "double", "required": true , "nullable": false, "default":0.0 },
+            "timestamp": { "type": "timestamp", "required": true, "nullable": false }
           }
         },
         "volunteering_hours": {
           "primary_key": "attendance_id",
           "fields": {
-            "opportunity_id": { "type": "string", "required": true },
-            "hours": { "type": "double", "required": true },
-            "date": { "type": "timestamp", "required": true }
+            "opportunity_id": { "type": "string", "required": true, "nullable": false },
+            "opportunitty_title": { "type": "string", "required": true, "nullable": false , "default":"Opportunitties Require a descriptive title"},
+            "opportunitty_description": { "type": "block", "required": false, "nullable": true, "hint":"Full or no description as the title can suffice" },
+            "hours": { "type": "double", "required": false , "hint":"hours are nice to have but could be a permanent position"},
+            "date": { "type": "timestamp", "required": false }
           }
         },
         "vcoin_ledger": {
           "primary_key": "entry_id",
-          "fields": {
-            "amount": { "type": "double", "required": true,"mutable":false },
-            "source":{"type":"string","required": true,"mutable":false , "source_hint":" member_username from where this coming from " },
-            "transaction_type": { "type": "string", "options":"credit,debit","required": true ,"mutable":false},
-            "reference":{"type": "string", "required": false ,"mutable":false,"reference_hint":"Custom field for member to understand this transaction"},
+          "fields": { 
+            "amount": { "type": "double", "required": true,"mutable":false, "hint":"explicit amount required or through an error "},
+            "source":{"type":"string","required": true,"mutable":false , "hint":" member_username from where this coming from " },
+            "transaction_type": { "type": "List", "options":"credit,debit","required": true , "nullable":false, "mutable":false},
+            "reference":{"type": "string", "required": false ,"mutable":false,"hint":"Custom field for member to understand this transaction"},
             "created_at": { "type": "timestamp", "required": true ,"mutable":false}
           }
         },
           "vcoin_exchange": {
           "primary_key": "exchange_id",
           "fields": {
-            "amount": { "type": "double", "required": true,"mutable":false },
-            "fx_rate": { "type": "double", "required": false, "default": 1.0 },
-            "original_currency": { "type": "string", "required": true, "default": "vCoin" },
-            "source":{"type":"string","required": true,"mutable":false , "source_hint":" options are from vcoin wallet or any associated bank from member's profile " },
-            "destination":{"type":"string","required": true,"mutable":false , "destination_hint":" to own wallet or withdrawal to any associated bank from member's profile" },
-            "destination_currency": { "type": "string", "required": false, "default": "vCoin" },
-            "transaction_type": { "type": "string", "options":"credit,debit","required": true ,"mutable":false},
-            "reference":{"type": "string", "required": false ,"mutable":false,"reference_hint":"Custom field for member to understand this transaction"},
+            "amount": { "type": "double", "required": true,"mutable":false, "hint":"explicit amount required or through an error " },
+            "fx_rate": { "type": "double", "required": true,"mutable":false , "default": 1.0 },
+            "original_currency": { "type": "string", "required": true, "mutable":false , "default": "vCoin" },
+            "source":{"type":"string","required": true,"mutable":false , "hint":" options are from vcoin wallet or any associated bank from member's profile " },
+            "destination":{"type":"string","required": true,"mutable":false , "hint":" to own wallet or withdrawal to any associated bank from member's profile" },
+            "destination_currency": { "type": "string", "required": true, "mutable":false ,"default": "vCoin" },
+            "transaction_type": { "type": "List", "options":"credit,debit","required": true , "nullable":false,"mutable":false, "hint":"explicit type required or through an error "},
+            "reference":{"type": "string", "required": false ,"mutable":false,"hint":"Custom field for member to understand this transaction"},
             "created_at": { "type": "timestamp", "required": true ,"mutable":false}
           }
         }

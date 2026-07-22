@@ -49,6 +49,7 @@ class _ProfileFormScreenState extends State<ProfileFormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final authProv = context.watch<AppAuthProvider>();
 
     return Scaffold(
@@ -92,17 +93,17 @@ class _ProfileFormScreenState extends State<ProfileFormScreen> {
                   ],
                 ),
                 const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: () async {
+                /* ElevatedButton(
+                                   onPressed: () async {
                     await authProv.saveProfileMetadata(
                       username: _userController.text,
                       coachId: _coachId,
                       location: _locationController.text,
                     );
                     if (context.mounted) context.go('/');
-                  },
+                  }, 
                   child: const Text('Save and Finish'),
-                ),
+                ),*/
               ],
             ),
           ),

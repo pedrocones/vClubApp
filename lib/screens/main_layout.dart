@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/auth_provider.dart';
+//import 'package:provider/provider.dart';
+//import '../providers/auth_provider.dart';
 import '../widgets/main_top_bar.dart';
 import '../widgets/main_bottom_bar.dart';
 
@@ -11,7 +11,7 @@ class MainLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = context.watch<AppAuthProvider>();
+    //    final authProvider = context.watch<AppAuthProvider>();
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -27,11 +27,11 @@ class MainLayout extends StatelessWidget {
               ? null
               : const MainBottomBar(),
 
-          floatingActionButton: FloatingActionButton.small(
+          /*           floatingActionButton: FloatingActionButton.small(
             backgroundColor: Colors.amber,
             onPressed: () => authProvider.toggleLogin(),
             child: Icon(authProvider.isLoggedIn ? Icons.lock_open : Icons.lock),
-          ),
+          ), */
         );
       },
     );

@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import '../api/abstracts/abstract_donate_service.dart';
 import '../api/abstracts/mock_services_registry.dart';
+import '../models/members/member_model.dart';
 
 class DonateLoggedPage extends StatefulWidget {
   final AbstractDonateService donateService;
 
-  DonateLoggedPage({super.key, AbstractDonateService? service})
-    : donateService = service ?? testDonateAPI;
+  // 1. Define the required member field
+  final MemberModel member;
+
+  DonateLoggedPage({
+    super.key,
+    required this.member,
+    AbstractDonateService? service,
+  }) : donateService = service ?? testDonateAPI;
 
   @override
   State<DonateLoggedPage> createState() => _DonateLoggedPageState();

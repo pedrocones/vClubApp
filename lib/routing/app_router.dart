@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-// Import your page modules here
-import '../screens/admin_dashboard_screen.dart';
+// Screens
 import '../screens/main_layout.dart';
 import '../screens/landing_hub_view.dart';
 import '../screens/about_us.dart';
@@ -15,11 +14,11 @@ import '../screens/membership_screen.dart';
 import '../screens/membership_logged.dart';
 import '../screens/system_settings.dart';
 import '../screens/profile.dart';
-import '../screens/profile_form.dart';
 import '../screens/sign_up_screen.dart';
 import '../screens/contact_us.dart';
 import '../screens/sign_off.dart';
 import '../providers/auth_provider.dart';
+import '../models/members/member_model.dart';
 
 class AppRouter {
   static final GlobalKey<NavigatorState> _rootNavigatorKey =
@@ -31,18 +30,14 @@ class AppRouter {
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/',
     routes: [
-      // 1. Pages wrapped inside the shared navigation interface shell
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
-        builder: (context, state, child) {
-          return MainLayout(child: child);
-        },
+        builder: (context, state, child) => MainLayout(child: child),
         routes: [
           GoRoute(
             path: '/',
-            builder: (context, state) => LandingHubView(
-              onNavigate: (index) => _handleOldIndexNav(context, index),
-            ),
+            builder: (context, state) =>
+                const LandingHubView(), // Numeric callback removed [3]
           ),
           GoRoute(
             path: '/about',
@@ -51,26 +46,47 @@ class AppRouter {
           GoRoute(
             path: '/donate',
             builder: (context, state) {
-              final loggedIn = context.watch<AppAuthProvider>().isLoggedIn;
-              return loggedIn ? DonateLoggedPage() : const DonatePage();
+              final member = context.watch<AppAuthProvider>().member;
+              // Access Gating: All statuses can donate, but Logged view provides ledger tools [1]
+              return (member.member_id != 'GUEST_admin_L0')
+                  ? DonateLoggedPage(member: member)
+                  : const DonatePage();
             },
           ),
           GoRoute(
             path: '/volunteer',
             builder: (context, state) {
-              final loggedIn = context.watch<AppAuthProvider>().isLoggedIn;
-              return loggedIn
-                  ? const VolunteerLoggedPage()
+              final member = context.watch<AppAuthProvider>().member;
+              // Gated by Benefits Map: Only verified tiers (Ambassador/Associated) can apply [1]
+              bool isVerified =
+                  member.member_status == MemberStatus.ambassador ||
+                  member.member_status == MemberStatus.associated;
+              return isVerified
+                  ? VolunteerLoggedPage(member: member)
                   : const VolunteerPage();
             },
           ),
           GoRoute(
             path: '/membership',
             builder: (context, state) {
-              final loggedIn = context.watch<AppAuthProvider>().isLoggedIn;
-              return loggedIn
-                  ? const MembershipLoggedPage()
+              final member = context.watch<AppAuthProvider>().member;
+              // Decision based on status: Show dashboard for verified tiers [1]
+              bool hasDashboardAccess =
+                  member.member_status == MemberStatus.ambassador ||
+                  member.member_status == MemberStatus.associated;
+              return hasDashboardAccess
+                  ? MembershipLoggedPage(member: member)
                   : const MembershipPage();
+            },
+          ),
+          GoRoute(
+            path: '/profile',
+            builder: (context, state) {
+              final auth = context.watch<AppAuthProvider>();
+              // If not the Guest, show real profile [Conversation History]
+              return auth.isLoggedIn
+                  ? ProfilePage(member: auth.member)
+                  : const SignUpScreen();
             },
           ),
           GoRoute(
@@ -78,96 +94,24 @@ class AppRouter {
             builder: (context, state) => const SystemSettingsPage(),
           ),
           GoRoute(
-            path: '/profile',
-            builder: (context, state) {
-              final loggedIn = context.watch<AppAuthProvider>().isLoggedIn;
-              return loggedIn ? const ProfilePage() : const SignUpScreen();
-            },
-          ),
-          GoRoute(
-            path: '/contact',
-            builder: (context, state) => ContactUsPage(),
-          ),
-          GoRoute(
             path: '/signup',
             builder: (context, state) {
-              final incomingRecruiterID = state
-                  .uri
-                  .queryParameters['memberID']; // Extracts ?memberId= from URL
-              return SignUpScreen(recruiterID: incomingRecruiterID);
+              final recruiterID = state.uri.queryParameters['memberID'];
+              return SignUpScreen(recruiterID: recruiterID);
             },
-          ),
-
-          // 🛡️ Secured Admin Dashboard Console Route
-          GoRoute(
-            path: '/admin-dashboard',
-            builder: (BuildContext context, GoRouterState state) =>
-                const AdminDashboardScreen(),
-
-            /*             redirect: (BuildContext context, GoRouterState state) {
-              // 1. Set your authorization check variables FIRST
-              bool isMockUserAdmin = true; // Replace with your state management: userProfile.role == 'Admin'
-
-              // 2. Evaluate access logic and branch rules
-              if (!isMockUserAdmin) {
-                debugPrint(
-                  "🔒 Unauthorized access attempt recorded. Redirecting...",
-                );
-                return '/unauthorized'; // Reroute out instantly
-              }
-
-              // 3. CRITICAL: Put your fallback return null at the ABSOLUTE BOTTOM of the block.
-              // This lets the user through smoothly if they pass the admin check above.
-              return null;
-            }, */
-          ),
-
-          // 🔒 Unauthorized Access Catch Route
-          GoRoute(
-            path: '/unauthorized',
-            builder: (BuildContext context, GoRouterState state) =>
-                const Scaffold(
-                  body: Center(
-                    child: Text(
-                      "🔒 Access Denied.\nAdministrative privileges required.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, height: 1.5),
-                    ),
-                  ),
-                ),
-          ),
-
-          GoRoute(
-            path: '/complete-profile',
-            builder: (context, state) => const ProfileFormScreen(),
           ),
         ],
       ),
-      // 2. Standalone paths built outside the standard top/bottom navigation shell
       GoRoute(
         path: '/sign-off',
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => const SignOffPage(),
       ),
+      GoRoute(
+        path: '/contact_us',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) => ContactUsPage(),
+      ),
     ],
   );
-
-  // Fallback map to translate your legacy index-based steps into clean web URLs
-  static void _handleOldIndexNav(BuildContext context, int index) {
-    final paths = {
-      0: '/',
-      1: '/about',
-      2: '/donate',
-      3: '/volunteer',
-      4: '/membership',
-      5: '/settings',
-      6: '/profile',
-      7: '/contact',
-    };
-    if (index == 99) {
-      context.push('/sign-off');
-    } else if (paths.containsKey(index)) {
-      context.go(paths[index]!);
-    }
-  }
 }

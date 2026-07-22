@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import '../models/members/member_model.dart'; // Ensure correct path to your synced model
 
 class MembershipLoggedPage extends StatelessWidget {
-  const MembershipLoggedPage({super.key});
+  // 1. Define the required member field
+  final MemberModel member;
+
+  // 2. Add it to the constructor (Removes the compiler error)
+  const MembershipLoggedPage({super.key, required this.member});
 
   @override
   Widget build(BuildContext context) {
@@ -16,36 +21,26 @@ class MembershipLoggedPage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 30),
-        Card(
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              children: [
-                const Icon(Icons.verified_user, size: 64, color: Colors.green),
-                const SizedBox(height: 16),
-                const Text(
-                  'Premium Console Member',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 4),
-                const Text(
-                  'Verification ID: VIC-77321-2026',
-                  style: TextStyle(color: Colors.grey),
-                ),
-                const SizedBox(height: 20),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text('View Member Voting Rights & Benefits'),
-                ),
-              ],
-            ),
-          ),
-        ),
+        _buildMemberCard(context),
       ],
+    );
+  }
+
+  Widget _buildMemberCard(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          const Icon(Icons.verified_user, size: 64, color: Colors.green),
+          const SizedBox(height: 16),
+          // Using the passed member data dynamically [Source 10]
+          Text(
+            member.username ?? 'Rookie Member',
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          Text('Status: ${member.member_status.name.toUpperCase()}'),
+          const SizedBox(height: 20),
+        ],
+      ),
     );
   }
 }

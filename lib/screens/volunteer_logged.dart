@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../models/members/member_model.dart';
+
 class VolunteerLoggedPage extends StatelessWidget {
-  const VolunteerLoggedPage({super.key});
+  // 1. Define the required member field
+  final MemberModel member;
+
+  const VolunteerLoggedPage({super.key, required this.member});
 
   @override
   Widget build(BuildContext context) {

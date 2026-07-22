@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import '../models/members/member_model.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  final MemberModel member;
+
+  const ProfilePage({super.key, required this.member});
 
   @override
   Widget build(BuildContext context) {
