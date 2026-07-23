@@ -1,30 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import '../providers/auth_provider.dart';
 
-class SignOffPage extends StatelessWidget {
+class SignOffPage extends StatefulWidget {
   const SignOffPage({super.key});
+
+  @override
+  State<SignOffPage> createState() => _SignOffPageState();
+}
+
+class _SignOffPageState extends State<SignOffPage> {
+  @override
+  void initState() {
+    super.initState();
+    // Reverts global state to GUEST_admin_L0 upon landing
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AppAuthProvider>().logout();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.indigo.shade900,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
+      body: Center(
+        child: Container(
+          padding: const EdgeInsets.all(32),
+          // FIX 1: Use constraints for maximum width
+          constraints: const BoxConstraints(maxWidth: 400),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Icon(
-                Icons.volunteer_activism,
-                size: 90,
-                color: Colors.amber,
-              ),
+              const Icon(Icons.exit_to_app, color: Colors.amber, size: 80),
               const SizedBox(height: 24),
               const Text(
-                'Thank You for Loving Your Neighborhood!',
+                "You have signed off",
+                // FIX 2 & 3: Use the enum TextAlign.center, not the Type 'Center'
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -34,29 +46,19 @@ class SignOffPage extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               const Text(
-                'You have been safely signed off your current active session profile track record.',
+                "Your session has ended safely. Vicinum Club remains active in your community.",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white70, fontSize: 14),
+                style: TextStyle(color: Colors.white70, fontSize: 16),
               ),
               const SizedBox(height: 40),
-              ElevatedButton.icon(
+              ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.amber,
                   foregroundColor: Colors.indigo.shade900,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  minimumSize: const Size.fromHeight(50),
                 ),
-                onPressed: () {
-                  context
-                      .read<AppAuthProvider>()
-                      .logout(); // Triggers real signOut + Guest reset
-                  context.go('/'); // Redirect to landing
-                },
-
-                icon: const Icon(Icons.login),
-                label: const Text(
-                  'Return to Console Hub',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+                onPressed: () => context.go('/'),
+                child: const Text("RETURN TO VISITOR HUB"),
               ),
             ],
           ),

@@ -91,11 +91,13 @@ class MainTopBar extends StatelessWidget implements PreferredSizeWidget {
       const PopupMenuItem(value: '/profile', child: Text('My Profile')),
       const PopupMenuItem(value: '/settings', child: Text('System Settings')),
       const PopupMenuItem(value: '/contact_us', child: Text('Contact Us')),
+      const PopupMenuItem(value: '/sign-off', child: Text('Sign Out')),
       const PopupMenuDivider(),
       if (!loggedIn) ...[
         const PopupMenuItem(value: '/signin', child: Text('Sign In')),
         const PopupMenuItem(value: '/signup', child: Text('Join the Club')),
       ],
+      const PopupMenuDivider(),
       if (loggedIn)
         const PopupMenuItem(value: '/sign-off', child: Text('Sign Out')),
     ];
