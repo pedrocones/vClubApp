@@ -5,7 +5,7 @@ import '../providers/auth_provider.dart';
 import '../widgets/location_selector_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
-  final String? recruiterID; // Raw string from URL: "id;unicode;name;lang"
+  final String? recruiterID;
   const SignUpScreen({super.key, this.recruiterID});
 
   @override
@@ -73,13 +73,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     backgroundColor: Colors.indigo,
                     minimumSize: const Size.fromHeight(55),
                   ),
+
+                  // Inside SignUpScreen onPressed:
                   onPressed: () async {
-                    bool ok = await auth.signUpWithEmail(
-                      email: _email.text.trim(),
-                      password: _pass.text.trim(),
+                    // 1. Capture values before the async gap
+                    final email = _email.text.trim();
+                    final pass = _pass.text.trim();
+
+                    // 2. Perform the async call
+                    bool success = await auth.signUpWithEmail(
+                      email: email,
+                      password: pass,
                     );
-                    if (ok && context.mounted) context.go('/membership');
+
+                    // 3. FIX: Properly guard the BuildContext across the async gap
+                    // We check context.mounted specifically before using context.go
+                    if (success && context.mounted) {
+                      context.go('/membership');
+                    }
                   },
+
                   child: const Text(
                     "ACTIVATE ROOKIE PASS",
                     style: TextStyle(color: Colors.white),
@@ -142,17 +155,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
       builder: (context) => Container(
         padding: const EdgeInsets.all(24),
-        height: MediaQuery.of(context).size.height * 0.7,
+        height:
+            MediaQuery.of(context).size.height *
+            0.4, // Constrained height [User Query]
         child: const Column(
           children: [
             Text(
-              "Select Your Local Town",
+              "Select Local Community",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             Divider(),
-            Expanded(
-              child: SingleChildScrollView(child: LocationSelectorWidget()),
-            ),
+            Expanded(child: LocationSelectorWidget()),
           ],
         ),
       ),

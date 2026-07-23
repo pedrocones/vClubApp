@@ -8,57 +8,59 @@ class AppAuthProvider with ChangeNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   late MemberModel _member;
-  User? _firebaseUser;
+  User? _firebaseUser; // Track the Firebase User state [Conversation History]
   bool _isLoading = false;
 
-  // Session state initialized to GUEST_admin_L0 defaults [801, Conversation History]
+  // Session-specific fields [User Logic]
   String _referralId = "admin_L1";
-  late String _currentLanguage;
-  late String _sessionTownUnicode;
-  late String _sessionTownName;
+  String _sessionLanguage = "en";
+  String _sessionTownUnicode = "US-CA-M0180";
+  String _sessionTownName = "Marina del Rey";
 
   AppAuthProvider() {
-    _applyGuestDefaults();
+    _member = _createDefaultGuest();
     _auth.authStateChanges().listen(_onAuthStateChanged);
   }
 
   // Getters
-  MemberModel get member => _member;
   bool get isLoggedIn => _firebaseUser != null;
+  MemberModel get member => _member;
   bool get isLoading => _isLoading;
-  String get currentLanguage => _currentLanguage;
+  String get currentLanguage => _sessionLanguage;
   String get sessionTownUnicode => _sessionTownUnicode;
   String get sessionTownName => _sessionTownName;
 
-  void _applyGuestDefaults() {
-    _member = _createDefaultGuest();
-    _referralId = "admin_L1";
-    _currentLanguage = 'en';
-    _sessionTownUnicode = 'US-CA-M0180';
-    _sessionTownName = "Marina del Rey";
-  }
-
-  /// Synchronously decodes URL: "id;unicode;name;lang" [User Query]
+  /// Synchronously decodes URL: "id;unicode;name;lang" [User Logic]
   void initializeReferral(String? rawLink) {
     if (rawLink == null || rawLink.isEmpty || rawLink == 'admin_L0') {
       _applyGuestDefaults();
-    } else {
-      try {
-        final parts = rawLink.split(';');
-        if (parts.length >= 3) {
-          _referralId = parts[0].trim();
-          _sessionTownUnicode = parts[1].trim();
-          _sessionTownName = parts[2].trim();
-          if (parts.length > 3) _currentLanguage = parts[3].trim();
-          debugPrint(
-            "🔗 REF_TRACE: Decoded -> ID: $_referralId, Hub: $_sessionTownName",
-          );
-        }
-      } catch (e) {
-        debugPrint("⚠️ REF_TRACE: Decoding error, using defaults.");
-        _applyGuestDefaults();
-      }
+      return;
     }
+    try {
+      final List<String> parts = rawLink.split(';');
+      if (parts.length >= 3) {
+        // FIX: Access by index then trim [User Logic]
+        _referralId = parts[0].trim();
+        _sessionTownUnicode = parts[1].trim();
+        _sessionTownName = parts[2].trim();
+        if (parts.length > 3) _sessionLanguage = parts[3].trim();
+
+        debugPrint(
+          "🔗 SESSION_INIT: Hub set to $_sessionTownName ($_sessionTownUnicode)",
+        );
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint("⚠️ SESSION_INIT_ERR: $e");
+      _applyGuestDefaults();
+    }
+  }
+
+  void _applyGuestDefaults() {
+    _referralId = "admin_L1";
+    _sessionLanguage = "en";
+    _sessionTownUnicode = "US-CA-M0180";
+    _sessionTownName = "Marina del Rey";
     notifyListeners();
   }
 
@@ -68,18 +70,6 @@ class AppAuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateLanguage(String langCode) {
-    _currentLanguage = langCode;
-    notifyListeners();
-  }
-
-  Future<void> logout() async {
-    await _auth.signOut();
-    _applyGuestDefaults();
-    notifyListeners();
-  }
-
-  /// Final Sign-Up: Commits session state to Registry v3 [801, Conversation History]
   Future<bool> signUpWithEmail({
     required String email,
     required String password,
@@ -94,21 +84,18 @@ class AppAuthProvider with ChangeNotifier {
       await _db.collection('members').doc(cred.user!.uid).set({
         "member_id": cred.user!.uid,
         "email": email,
-        "username": null,
         "town_unicode": _sessionTownUnicode,
         "member_status": "Rookie",
-        "vcoin_balance": 0.0,
         "reward_tree": {
           "recruiter_id": _referralId,
           "coach_id": _referralId,
           "mentor_id": "admin_L2",
           "master_id": "admin_L3",
         },
-        "member_profile": {"is_anonymous": true, "language": _currentLanguage},
+        "member_profile": {"is_anonymous": true, "language": _sessionLanguage},
       });
       return true;
     } catch (e) {
-      debugPrint("❌ SIGNUP_TRACE: $e");
       return false;
     } finally {
       _isLoading = false;
@@ -135,16 +122,42 @@ class AppAuthProvider with ChangeNotifier {
   }
 
   Future<void> _onAuthStateChanged(User? user) async {
-    _firebaseUser = user;
-    if (user != null) {
+    _firebaseUser = user; // Update the tracking variable [Conversation History]
+
+    if (user == null) {
+      _member = _createDefaultGuest();
+    } else {
+      // Upon login, sync the permanent member record to the global state
       final doc = await _db.collection('members').doc(user.uid).get();
       if (doc.exists) {
         _member = MemberModel.fromJson(doc.data()!);
-        _currentLanguage = _member.member_profile['language'] ?? 'en';
+        _sessionLanguage = _member.member_profile['language'] ?? 'en';
+        _sessionTownUnicode = _member.town_unicode;
       }
-    } else {
-      _applyGuestDefaults();
     }
     notifyListeners();
+  }
+
+  Future<void> logout() async {
+    try {
+      debugPrint("🔍 AUTH_TRACE: Initiating logout...");
+      await _auth.signOut();
+
+      // Revert all session state to Guest defaults
+      _applyGuestDefaults();
+
+      notifyListeners(); // Updates TopBar and Navigation immediately
+      debugPrint(
+        "✅ AUTH_TRACE: Logout successful. System reset to GUEST_admin_L0.",
+      );
+    } catch (e) {
+      debugPrint("❌ AUTH_TRACE: Logout error: $e");
+    }
+  }
+
+  void updateLanguage(String langCode) {
+    _sessionLanguage = langCode;
+    notifyListeners(); // Triggers UI to refresh translations (e.g., in Location Widget)
+    debugPrint("🌐 LANG_TRACE: Session language updated to: $langCode");
   }
 }

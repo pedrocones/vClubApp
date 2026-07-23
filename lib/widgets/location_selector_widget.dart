@@ -13,6 +13,8 @@ class LocationSelectorWidget extends StatefulWidget {
 class _LocationSelectorWidgetState extends State<LocationSelectorWidget> {
   String? selectedIso3;
   String? selectedSub;
+  String? selectedTownUnicode;
+  String? selectedTownName;
 
   @override
   Widget build(BuildContext context) {
@@ -23,25 +25,27 @@ class _LocationSelectorWidgetState extends State<LocationSelectorWidget> {
     return Column(
       children: [
         _buildDropdown(
-          label: "Select Country",
-          entityType: 'country',
+          label: "Country",
+          entity: 'country',
+          valueKey: 'country_iso3',
           stream: db
               .collection('countries')
               .where('isCountryOnboarded', isEqualTo: true)
               .snapshots(),
           value: selectedIso3,
-          valueKey: 'country_iso3',
           lang: lang,
-          onSelected: (val, name) => setState(() {
+          onChanged: (val, name) => setState(() {
             selectedIso3 = val;
             selectedSub = null;
+            selectedTownUnicode = null;
           }),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         if (selectedIso3 != null)
           _buildDropdown(
-            label: "Select Region",
-            entityType: 'subdivision',
+            label: "Region",
+            entity: 'subdivision',
+            valueKey: 'subdivision_code',
             stream: db
                 .collection('countries')
                 .doc(selectedIso3!)
@@ -49,17 +53,18 @@ class _LocationSelectorWidgetState extends State<LocationSelectorWidget> {
                 .where('isSubdivisionOnboarded', isEqualTo: true)
                 .snapshots(),
             value: selectedSub,
-            valueKey: 'subdivision_code',
             lang: lang,
-            onSelected: (val, name) => setState(() {
+            onChanged: (val, name) => setState(() {
               selectedSub = val;
+              selectedTownUnicode = null;
             }),
           ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         if (selectedSub != null)
           _buildDropdown(
-            label: "Select Local Town",
-            entityType: 'town',
+            label: "Town",
+            entity: 'town',
+            valueKey: 'town_unicode',
             stream: db
                 .collection('countries')
                 .doc(selectedIso3!)
@@ -68,13 +73,24 @@ class _LocationSelectorWidgetState extends State<LocationSelectorWidget> {
                 .collection('towns')
                 .orderBy('town_unicode')
                 .snapshots(),
-            value: null, // Always starts from scratch [User Query]
-            valueKey: 'town_unicode',
+            value: selectedTownUnicode,
             lang: lang,
-            onSelected: (val, name) {
-              auth.setSessionLocation(val, name);
+            onChanged: (val, name) => setState(() {
+              selectedTownUnicode = val;
+              selectedTownName = name;
+            }),
+          ),
+        const Spacer(),
+        if (selectedTownUnicode != null)
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size.fromHeight(45),
+            ),
+            onPressed: () {
+              auth.setSessionLocation(selectedTownUnicode!, selectedTownName!);
               Navigator.pop(context);
             },
+            child: const Text("CONFIRM ANCHORING"),
           ),
       ],
     );
@@ -82,12 +98,12 @@ class _LocationSelectorWidgetState extends State<LocationSelectorWidget> {
 
   Widget _buildDropdown({
     required String label,
-    required String entityType,
+    required String entity,
+    required String valueKey,
     required Stream<QuerySnapshot> stream,
     required String? value,
-    required String valueKey,
     required String lang,
-    required Function(String, String) onSelected,
+    required Function(String, String) onChanged,
   }) {
     return StreamBuilder<QuerySnapshot>(
       stream: stream,
@@ -103,8 +119,8 @@ class _LocationSelectorWidgetState extends State<LocationSelectorWidget> {
           items: snapshot.data!.docs.map((doc) {
             final data = doc.data() as Map<String, dynamic>;
             final name =
-                data['${entityType}_name_$lang'] ??
-                data['${entityType}_name_en'] ??
+                data['${entity}_name_$lang'] ??
+                data['${entity}_name_en'] ??
                 "Unknown";
             return DropdownMenuItem(
               value: data[valueKey] as String,
@@ -112,16 +128,14 @@ class _LocationSelectorWidgetState extends State<LocationSelectorWidget> {
             );
           }).toList(),
           onChanged: (val) {
-            if (val != null) {
-              final doc = snapshot.data!.docs.firstWhere(
-                (d) => d[valueKey] == val,
-              );
-              final data = doc.data() as Map<String, dynamic>;
-              final name =
-                  data['${entityType}_name_$lang'] ??
-                  data['${entityType}_name_en'];
-              onSelected(val, name);
-            }
+            if (val == null) return;
+            final doc = snapshot.data!.docs.firstWhere(
+              (d) => d[valueKey] == val,
+            );
+            final name =
+                (doc.data() as Map<String, dynamic>)['${entity}_name_$lang'] ??
+                "Unknown";
+            onChanged(val, name);
           },
         );
       },
